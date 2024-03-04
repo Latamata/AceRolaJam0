@@ -138,8 +138,11 @@ IslandAberration.prototype.firstHouse = function( startPosX, startPosY ){
 }
 IslandAberration.prototype.firstMap = function( startPosX, startPosY ){	
 	this.currentScene = [];
-	// this.currentScene.push( this.mainPlayer );    
-	this.currentScene.push( new MakeDoorway(470,300,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
+	// this.currentScene.push( this.mainPlayer ); 
+	for (let i = 0; i < 7; i++) {
+		this.currentScene.push(new ForrestLine((i * 600) - 1500, -100, 600, 200));
+	}
+	this.currentScene.push( new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
     this.inDoors = false;
 }
 IslandAberration.prototype.update = function( elapsed ) {

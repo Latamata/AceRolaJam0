@@ -48,6 +48,19 @@ MakeAberration.prototype.draw = function( c ){
 	c.restore();
 }
 // ======================================================
+function ForrestLine( x, y, width, height ){
+	this.super( x, y );
+	this.width = width;
+	this.height = height;
+	this.collision = true;
+}
+extend( ForrestLine, TopDownPlayerMovement );
+ForrestLine.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_forrestline( c );
+	c.restore();
+}
 function MakeHouseTwo( x, y, width, height ){
 	this.super( x, y );
 	this.width = width;

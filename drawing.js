@@ -25,6 +25,12 @@ function draw_houseone( ctx ){
 	ctx.drawImage( picture, 0, 0 );
 	ctx.restore();
 }
+function draw_forrestline( ctx ){
+	let picture = document.getElementById('forrestline');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore();
+}
 function draw_house_floor( ctx, width, height ){
 	// let table = document.getElementById('table');
 	ctx.save();
