@@ -1,3 +1,4 @@
+
 function draw_button(ctx) {
     ctx.save();
     ctx.beginPath();
@@ -12,22 +13,28 @@ function draw_button(ctx) {
     ctx.restore();
 }
 
+function draw_housetwo( ctx ){
+	let picture = document.getElementById('housetwo');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore();
+}
 function draw_houseone( ctx ){
 	let picture = document.getElementById('houseone');
 	ctx.save();
 	ctx.drawImage( picture, 0, 0 );
 	ctx.restore();
 }
-function draw_wall( ctx, width, height ){
+function draw_house_floor( ctx, width, height ){
 	// let table = document.getElementById('table');
 	ctx.save();
 	ctx.beginPath();
 	ctx.rect( 0, 0, width, height );
 	// ctx.drawImage(table, 0, 0);
-	ctx.strokeStyle = "white";
-	ctx.fillStyle = "grey";
-	ctx.strokeStyle = "white";
-	ctx.stroke();
+	// ctx.strokeStyle = "white";
+	ctx.fillStyle = "brown";
+	// ctx.strokeStyle = "white";
+	// ctx.stroke();
 	ctx.fill();
 	ctx.restore();
 }
