@@ -21,11 +21,19 @@ function MakePlayer( x, y ){
 	this.x_speed = 0;
 	this.y_speed = 0;
 	this.speed = 2;
+	this.running = false;
 	this.height = this.y + 100;
 	this.width = this.x + 100;
 	// this.imageflip = false;
 }
 MakePlayer.prototype.update = function( elapsed ){
+	console.log(this.running);
+	if(this.running){
+		this.speed = 4;
+	} else{
+		this.speed = 2;
+		this.running = false;
+	}
 	
 }
 MakePlayer.prototype.draw = function( c ){
@@ -37,10 +45,14 @@ MakePlayer.prototype.draw = function( c ){
 // ======================================================
 function MakeAberration( x, y, width, height ){
 	this.super( x, y );
+	this.enemy = true;
 	this.width = width;
 	this.height = height;
 }
 extend( MakeAberration, TopDownPlayerMovement );
+MakeAberration.prototype.update = function( c ){
+	TopDownPlayerMovement.prototype.update.apply( this, arguments );
+}
 MakeAberration.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );	
@@ -48,19 +60,47 @@ MakeAberration.prototype.draw = function( c ){
 	c.restore();
 }
 // ======================================================
-function ForrestLine( x, y, width, height ){
+function ForrestLineSide( x, y, width, height ){
 	this.super( x, y );
 	this.width = width;
 	this.height = height;
 	this.collision = true;
 }
-extend( ForrestLine, TopDownPlayerMovement );
-ForrestLine.prototype.draw = function( c ){
+extend( ForrestLineSide, TopDownPlayerMovement );
+ForrestLineSide.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_forrestline_side( c );
+	c.restore();
+}
+// ======================================================
+function makeTotem( x, y, width, height ){
+	this.super( x, y );
+	// this.width = width;
+	// this.height = height;
+}
+extend( makeTotem, TopDownPlayerMovement );
+makeTotem.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_totem( c );
+	c.restore();
+}
+// ======================================================
+function ForrestLineTop( x, y, width, height ){
+	this.super( x, y );
+	this.width = width;
+	this.height = height;
+	this.collision = true;
+}
+extend( ForrestLineTop, TopDownPlayerMovement );
+ForrestLineTop.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );	
 	draw_forrestline( c );
 	c.restore();
 }
+// ======================================================
 function MakeHouseTwo( x, y, width, height ){
 	this.super( x, y );
 	this.width = width;
@@ -74,6 +114,7 @@ MakeHouseTwo.prototype.draw = function( c ){
 	draw_housetwo( c );
 	c.restore();
 }
+// ======================================================
 function MakeHouseOne( x, y, width, height ){
 	this.super( x, y );
 	this.width = width;
@@ -126,6 +167,7 @@ MakeDoorway.prototype.draw = function( c ){
 	// draw_button( c );
 	c.restore();
 }
+// ======================================================
 function MakeButton( x, y ){
 	this.x = x;
 	this.y = y;

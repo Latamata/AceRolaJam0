@@ -139,10 +139,13 @@ IslandAberration.prototype.firstHouse = function( startPosX, startPosY ){
 IslandAberration.prototype.firstMap = function( startPosX, startPosY ){	
 	this.currentScene = [];
 	// this.currentScene.push( this.mainPlayer ); 
-	for (let i = 0; i < 7; i++) {
-		this.currentScene.push(new ForrestLine((i * 600) - 1500, -100, 600, 200));
+	for (let i = 0; i < 5; i++) {
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, -100, 600, 200));
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, 1100, 600, 200));
+		this.currentScene.push(new ForrestLineSide( -1650, (i * 500)-100, 150, 500));
+		this.currentScene.push(new ForrestLineSide( 1450, (i * 500)-100, 150, 500));
 	}
-	this.currentScene.push( new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
+	this.currentScene.push( new makeTotem(810 + startPosX,560 + startPosY,200,100),new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
     this.inDoors = false;
 }
 IslandAberration.prototype.update = function( elapsed ) {
@@ -173,7 +176,22 @@ IslandAberration.prototype.update = function( elapsed ) {
 		this.upCollision = false;
 	}
 	this.currentScene.forEach(function( item ){
-		
+		if(item.enemy){
+			// console.log(distance_between(item, this.mainPlayer))
+			if( item.x < this.mainPlayer.x ){
+				// console.log("hit")
+				item.x += 2;
+			}	else{
+				item.x -= 2;
+			}
+			if( item.y < this.mainPlayer.y ){
+				// console.log("hit")
+				item.y += 2;
+			}	else{
+				item.y -= 2;
+			}
+			
+		}
 		this.collisionLogic( item );
 		item.update( elapsed, this.mainPlayer.x_speed, this.mainPlayer.y_speed );
 		// console.log(item);

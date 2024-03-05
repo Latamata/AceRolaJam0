@@ -1,4 +1,3 @@
-
 function draw_button(ctx) {
     ctx.save();
     ctx.beginPath();
@@ -12,7 +11,12 @@ function draw_button(ctx) {
     ctx.fillText("Start Game", 55, 60); // Draw the text at position (220, 60)
     ctx.restore();
 }
-
+function draw_totem( ctx ){
+	let picture = document.getElementById('totem');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore();
+}
 function draw_housetwo( ctx ){
 	let picture = document.getElementById('housetwo');
 	ctx.save();
@@ -24,6 +28,12 @@ function draw_houseone( ctx ){
 	ctx.save();
 	ctx.drawImage( picture, 0, 0 );
 	ctx.restore();
+}
+function draw_forrestline_side( ctx ){
+	let picture = document.getElementById('forrestlineside');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore()
 }
 function draw_forrestline( ctx ){
 	let picture = document.getElementById('forrestline');
