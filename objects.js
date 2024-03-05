@@ -48,6 +48,7 @@ function MakeAberration( x, y, width, height ){
 	this.enemy = true;
 	this.width = width;
 	this.height = height;
+	this.movementDirection = 1; 
 }
 extend( MakeAberration, TopDownPlayerMovement );
 MakeAberration.prototype.update = function( c ){

@@ -149,7 +149,7 @@ IslandAberration.prototype.firstMap = function( startPosX, startPosY ){
 	this.currentScene.push( new makeTotem(810 + startPosX,560 + startPosY,200,100),new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
     this.inDoors = false;
 }
-let movementDirection = 1; 
+
 IslandAberration.prototype.update = function( elapsed ) {
 	if ( this.moveRight && !this.moveLeft && !this.rightCollision) {
 		// wow this is actually not running
@@ -187,18 +187,18 @@ IslandAberration.prototype.update = function( elapsed ) {
 			// console.log(distance_between( this.currentScene[this.enemyLoc], item ));
 			if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
 				// console.log("ghost within the range")
-				movementDirection = -1;
+				this.currentScene[this.enemyLoc].movementDirection = -1;
 			}
 			else if(distance_between( this.currentScene[this.enemyLoc], item ) > 1000){
-				movementDirection = 1;
+				this.currentScene[this.enemyLoc].movementDirection = 1;
 			}
 		}
 		if(item.enemy){
 			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
 			// Reverse movement direction if needed
-			let xSpeed = 2 * movementDirection;
-			let ySpeed = 2 * movementDirection;
+			let xSpeed = 2 * item.movementDirection;
+			let ySpeed = 2 * item.movementDirection;
 
 			// Adjust position based on player position
 			if (item.x < this.mainPlayer.x) {
