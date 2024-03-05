@@ -189,6 +189,9 @@ IslandAberration.prototype.update = function( elapsed ) {
 				// console.log("ghost within the range")
 				movementDirection = -1;
 			}
+			else if(distance_between( this.currentScene[this.enemyLoc], item ) > 1000){
+				movementDirection = 1;
+			}
 		}
 		if(item.enemy){
 			this.enemyLoc = index;
