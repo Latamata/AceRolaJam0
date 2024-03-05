@@ -17,6 +17,7 @@ IslandAberration = function( id ){
 	this.rightCollision = false;	
 	this.upCollision = false;	
 	this.downCollision = false;	
+	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3, this.canvas.height / 4 );	
 	// this.firstMap(-300,-100);
@@ -148,6 +149,7 @@ IslandAberration.prototype.firstMap = function( startPosX, startPosY ){
 	this.currentScene.push( new makeTotem(810 + startPosX,560 + startPosY,200,100),new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
     this.inDoors = false;
 }
+let movementDirection = 1; 
 IslandAberration.prototype.update = function( elapsed ) {
 	if ( this.moveRight && !this.moveLeft && !this.rightCollision) {
 		// wow this is actually not running
@@ -175,22 +177,37 @@ IslandAberration.prototype.update = function( elapsed ) {
 		this.downCollision = false;
 		this.upCollision = false;
 	}
-	this.currentScene.forEach(function( item ){
+	
+	this.currentScene.forEach(function( item, index ){
+		// interaction between the ghost and totem 	
+		if (item.enemy) {
+			this.enemyLoc = index; // Set this.enemyLoc when encountering an enemy
+		}
+		if (item.isTotem && this.enemyLoc !== -1 && this.currentScene[this.enemyLoc] && item && !this.inDoors) {
+			// console.log(distance_between( this.currentScene[this.enemyLoc], item ));
+			if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
+				// console.log("ghost within the range")
+				movementDirection = -1;
+			}
+		}
 		if(item.enemy){
+			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
-			if( item.x < this.mainPlayer.x ){
-				// console.log("hit")
-				item.x += 2;
-			}	else{
-				item.x -= 2;
+			// Reverse movement direction if needed
+			let xSpeed = 2 * movementDirection;
+			let ySpeed = 2 * movementDirection;
+
+			// Adjust position based on player position
+			if (item.x < this.mainPlayer.x) {
+				item.x += xSpeed;
+			} else {
+				item.x -= xSpeed;
 			}
-			if( item.y < this.mainPlayer.y ){
-				// console.log("hit")
-				item.y += 2;
-			}	else{
-				item.y -= 2;
-			}
-			
+			if (item.y < this.mainPlayer.y) {
+				item.y += ySpeed;
+			} else {
+				item.y -= ySpeed;
+			}			
 		}
 		this.collisionLogic( item );
 		item.update( elapsed, this.mainPlayer.x_speed, this.mainPlayer.y_speed );
