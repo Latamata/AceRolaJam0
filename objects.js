@@ -24,7 +24,7 @@ function MakePlayer( x, y ){
 	this.running = false;
 	this.height = this.y + 100;
 	this.width = this.x + 100;
-	// this.imageflip = false;
+	this.hasKey = false;
 }
 MakePlayer.prototype.update = function( elapsed ){
 	console.log(this.running);
@@ -74,6 +74,44 @@ ForrestLineSide.prototype.draw = function( c ){
 	draw_forrestline_side( c );
 	c.restore();
 }
+// ======================================================
+function MakeKey( x, y, width, height ){
+	this.super( x, y );
+	this.width = width;
+	this.height = height;
+	this.isKey = true;
+}
+extend( MakeKey, TopDownPlayerMovement );
+MakeKey.prototype.update = function( c ){
+	
+	TopDownPlayerMovement.prototype.update.apply( this, arguments );
+}
+MakeKey.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_key( c );
+	c.restore();
+}
+// ======================================================
+function makeCar( x, y, width, height ){
+	this.super( x, y );
+	this.width = width;
+	this.height = height;
+	this.isCar = true;
+	this.collision = true;
+}
+extend( makeCar, TopDownPlayerMovement );
+makeCar.prototype.update = function( c ){
+	
+	TopDownPlayerMovement.prototype.update.apply( this, arguments );
+}
+makeCar.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_car( c );
+	c.restore();
+}
+
 // ======================================================
 function makeTotem( x, y, width, height ){
 	this.super( x, y );

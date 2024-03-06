@@ -95,62 +95,7 @@ IslandAberration.prototype.frame = function( timestamp ) {
 	this.previous = timestamp;
 	window.requestAnimationFrame( this.frame.bind( this ));
 }
-IslandAberration.prototype.collisionLogic = function( item ){	
-	if( item.inZone && this.action ){
-			// console.log("inzone")
-			if(this.inDoors){
-				this.firstMap(-350,-50);
-			}
-			else{
-				this.firstHouse();
-			}
-			this.action = false;			
-	}
-	if( item.collision ){
-		
-		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&
-		this.mainPlayer.y < item.y + item.height - 50 && this.mainPlayer.y+100 > item.y ){					
-			if( this.mainPlayer.x < item.x ){					
-				this.rightCollision = true;					
-				//console.log("hit right");										
-			}
-			else if( this.mainPlayer.x > item.x ){					
-				this.leftCollision = true;					
-				//console.log("hit left");				
-			}		
-			if( this.mainPlayer.y < item.y ){					
-				this.downCollision = true;				
-				//console.log("hit up");				
-			}
-			else if( this.mainPlayer.y > item.y ){					
-				this.upCollision = true;
-				// console.log("hit down");				
-			}									
-		}			
-	}				
-}
-IslandAberration.prototype.mainScreen = function(  ){	
-	this.currentScene.push(this.startButton);  
-}
-IslandAberration.prototype.firstHouse = function( startPosX, startPosY ){	
-	this.currentScene = [];
-	this.currentScene.push( new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100));    
-	this.inDoors = true;
-}
-IslandAberration.prototype.firstMap = function( startPosX, startPosY ){	
-	this.currentScene = [];
-	// this.currentScene.push( this.mainPlayer ); 
-	for (let i = 0; i < 5; i++) {
-		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, -100, 600, 200));
-		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, 1100, 600, 200));
-		this.currentScene.push(new ForrestLineSide( -1650, (i * 500)-100, 150, 500));
-		this.currentScene.push(new ForrestLineSide( 1450, (i * 500)-100, 150, 500));
-	}
-	this.currentScene.push( new makeTotem(810 + startPosX,560 + startPosY,200,100),new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
-    this.inDoors = false;
-}
-
-IslandAberration.prototype.update = function( elapsed ) {
+IslandAberration.prototype.movementLogic = function(){	
 	if ( this.moveRight && !this.moveLeft && !this.rightCollision) {
 		// wow this is actually not running
 		// console.log("runningright");	
@@ -177,13 +122,84 @@ IslandAberration.prototype.update = function( elapsed ) {
 		this.downCollision = false;
 		this.upCollision = false;
 	}
+}
+IslandAberration.prototype.collisionLogic = function( item ){
 	
+	if( item.inZone && this.action ){
+			// console.log("inzone")
+			if(this.inDoors){
+				this.firstMap(-350,-50);
+			}
+			else{
+				this.firstHouse();
+			}
+			this.action = false;			
+	}
+	if( item.collision ){
+		
+		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&
+		this.mainPlayer.y < item.y + item.height - 50 && this.mainPlayer.y+100 > item.y ){	
+			if ( item.isCar && this.action && this.mainPlayer.hasKey ) {			
+				console.log("win game")
+			}
+			if( this.mainPlayer.x < item.x ){					
+				this.rightCollision = true;					
+				//console.log("hit right");										
+			}
+			else if( this.mainPlayer.x > item.x ){					
+				this.leftCollision = true;					
+				//console.log("hit left");				
+			}		
+			if( this.mainPlayer.y < item.y ){					
+				this.downCollision = true;				
+				//console.log("hit up");				
+			}
+			else if( this.mainPlayer.y > item.y ){					
+				this.upCollision = true;
+				// console.log("hit down");				
+			}									
+		}			
+	}				
+}
+IslandAberration.prototype.mainScreen = function(  ){	
+	this.currentScene.push(this.startButton);  
+}
+IslandAberration.prototype.firstHouse = function(  ){	
+	this.currentScene = [];
+	this.currentScene.push( new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), new MakeKey(325,0,50,50) );    
+	this.inDoors = true;
+}
+IslandAberration.prototype.firstMap = function( startPosX, startPosY ){	
+	this.currentScene = [];
+	// this.currentScene.push( this.mainPlayer ); 
+	for (let i = 0; i < 5; i++) {
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, -100, 600, 200));
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, 1100, 600, 200));
+		this.currentScene.push(new ForrestLineSide( -1650, (i * 500)-100, 150, 500));
+		this.currentScene.push(new ForrestLineSide( 1450, (i * 500)-100, 150, 500));
+	}
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,950 + startPosY,200,100),new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
+    this.inDoors = false;
+}
+
+IslandAberration.prototype.update = function( elapsed ) {
+	
+	this.movementLogic();
 	this.currentScene.forEach(function( item, index ){
 		// interaction between the ghost and totem 	
-		if (item.enemy) {
+		
+		if ( item.isKey ) {			
+			if(distance_between( this.mainPlayer, item ) < 50 ){	
+			
+				this.currentScene.splice( index, 1 );
+				this.mainPlayer.hasKey = true;
+				console.log(this.mainPlayer.hasKey)
+			}
+		}
+		if ( item.enemy ) {
 			this.enemyLoc = index; // Set this.enemyLoc when encountering an enemy
 		}
-		if (item.isTotem && this.enemyLoc !== -1 && this.currentScene[this.enemyLoc] && item && !this.inDoors) {
+		if ( item.isTotem && this.enemyLoc !== -1 && this.currentScene[ this.enemyLoc ] && item && !this.inDoors ) {
 			// console.log(distance_between( this.currentScene[this.enemyLoc], item ));
 			if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
 				// console.log("ghost within the range")
@@ -193,7 +209,11 @@ IslandAberration.prototype.update = function( elapsed ) {
 				this.currentScene[this.enemyLoc].movementDirection = 1;
 			}
 		}
-		if(item.enemy){
+		// detection for player and enemy
+		if( item.enemy ){
+			if( distance_between( this.mainPlayer, item ) < 65 ){
+				console.log("ghost kill me")
+			}
 			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
 			// Reverse movement direction if needed
@@ -214,7 +234,6 @@ IslandAberration.prototype.update = function( elapsed ) {
 		}
 		this.collisionLogic( item );
 		item.update( elapsed, this.mainPlayer.x_speed, this.mainPlayer.y_speed );
-		// console.log(item);
 	}.bind(this));
 }	
 IslandAberration.prototype.draw = function() {

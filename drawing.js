@@ -11,12 +11,25 @@ function draw_button(ctx) {
     ctx.fillText("Start Game", 55, 60); // Draw the text at position (220, 60)
     ctx.restore();
 }
+function draw_key( ctx ){
+	let picture = document.getElementById('keys');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore();
+}
+function draw_car( ctx ){
+	let picture = document.getElementById('car');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore();
+}
 function draw_totem( ctx ){
 	let picture = document.getElementById('totem');
 	ctx.save();
 	ctx.drawImage( picture, 0, 0 );
 	ctx.restore();
 }
+
 function draw_housetwo( ctx ){
 	let picture = document.getElementById('housetwo');
 	ctx.save();
