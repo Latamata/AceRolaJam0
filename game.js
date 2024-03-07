@@ -19,7 +19,8 @@ ForrestHaunting = function( id ){
 	this.downCollision = false;	
 	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
-	this.startButton = new MakeButton( this.canvas.width / 3, this.canvas.height / 4 );	
+	this.startButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Start Game" );	
+	this.currentTitle = new MakeTitle( 290,100,"ForrestHaunting" );
 	this.firstMap(-300,-100);
 	this.mainScreen();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
@@ -35,12 +36,12 @@ ForrestHaunting.prototype.onMouseDown = function( event ) {
     
     // Check collision with startButton
     if ( !this.startPressed && this.startButton.x <  mouseX && this.startButton.x + this.startButton.width >  mouseX && this.startButton.y <  mouseY && this.startButton.y + this.startButton.height >  mouseY) {
-		this.firstMap( 1100,-550 );
+		this.firstMap( 1100, -550 );
 		this.startPressed = true;
     }
 }
 ForrestHaunting.prototype.keyDown = function( e ){
-	this.key_handler(e, true);	
+	this.key_handler( e, true );	
 }
 ForrestHaunting.prototype.keyUp = function( e ){
 	this.key_handler( e, false );	
@@ -162,6 +163,8 @@ ForrestHaunting.prototype.collisionLogic = function( item, index ){
 			if( distance_between( this.mainPlayer, item ) < 65 ){
 				console.log("ghost kill me");
 				this.mainScreen();
+				this.currentTitle.buttonText = "You Died....";
+				this.startButton.buttonText = "Restart";
 			}
 			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
@@ -211,7 +214,7 @@ ForrestHaunting.prototype.mainScreen = function(  ){
 	this.mainPlayer.hasKey = false;
 	this.startPressed = false;
 	this.currentScene = [];	
-	this.currentScene.push(this.startButton);  
+	this.currentScene.push(this.startButton, this.currentTitle);  
 }
 ForrestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
@@ -255,6 +258,6 @@ ForrestHaunting.prototype.draw = function() {
 		item.draw( this.c )
 		
 	}.bind( this ));	
-	// this.mainPlayer.draw( this.c )
+	
 }
 

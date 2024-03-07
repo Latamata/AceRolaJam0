@@ -28,6 +28,7 @@ function MakePlayer( x, y ){
 }
 MakePlayer.prototype.update = function( elapsed ){
 	// console.log(this.hasKey);
+	// I dont know if I want to have run
 	if(this.running){
 		this.speed = 4;
 	} else{
@@ -211,18 +212,33 @@ MakeDoorway.prototype.draw = function( c ){
 	c.restore();
 }
 // ======================================================
-function MakeButton( x, y ){
+function MakeTitle( x, y, buttonText ){
+	this.x = x;
+	this.y = y;
+	this.buttonText = buttonText;
+}
+MakeTitle.prototype.update = function( c ){
+}
+MakeTitle.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_title( c, this.buttonText )
+	c.restore();
+}
+// ======================================================
+function MakeButton( x, y, buttonText ){
 	this.x = x;
 	this.y = y;
 	this.width = 200;
 	this.height = 100;
+	this.buttonText = buttonText;
 }
 MakeButton.prototype.update = function( c ){
 }
 MakeButton.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );	
-	draw_button( c );
+	draw_button( c, this.buttonText );
 	c.restore();
 }
 	
