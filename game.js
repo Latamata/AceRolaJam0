@@ -126,7 +126,7 @@ ForrestHaunting.prototype.movementLogic = function(){
 ForrestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
-		if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
+		if(distance_between( this.currentScene[ this.enemyLoc ], item ) < 100){
 			// console.log("ghost within the range")
 			this.currentScene[ this.enemyLoc ].movementDirection = -1;
 		}
@@ -160,7 +160,8 @@ ForrestHaunting.prototype.collisionLogic = function( item, index ){
 		// detection for player and enemy
 		if( item.enemy ){
 			if( distance_between( this.mainPlayer, item ) < 65 ){
-				console.log("ghost kill me")
+				console.log("ghost kill me");
+				this.mainScreen();
 			}
 			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
@@ -207,6 +208,8 @@ ForrestHaunting.prototype.collisionLogic = function( item, index ){
 	}				
 }
 ForrestHaunting.prototype.mainScreen = function(  ){
+	this.mainPlayer.hasKey = false;
+	this.startPressed = false;
 	this.currentScene = [];	
 	this.currentScene.push(this.startButton);  
 }
@@ -223,12 +226,12 @@ ForrestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 	this.currentScene = [];
 	
 	for (let i = 0; i < 5; i++) {
-		this.currentScene.push(new ForrestLineTop((i * 600) - 1500+ startPosX, -100+ startPosY, 600, 200));
-		this.currentScene.push(new ForrestLineTop((i * 600) - 1500+ startPosX, 1100+ startPosY, 600, 200));
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500 + startPosX, -100 + startPosY, 600, 200));
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500 + startPosX, 1100 + startPosY, 600, 200));
 		this.currentScene.push(new ForrestLineSide( -1650+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
-	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,950 + startPosY,200,100),new makeTotem(700 + startPosX,500 + startPosY,200,100)/**/,
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,50 + startPosY,200,100),new makeTotem(-920 + startPosX,950 + startPosY,200,100),new makeTotem(700 + startPosX,500 + startPosY,200,100)/**/,
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
 	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
 	this.currentScene.push( this.mainPlayer ); 	
