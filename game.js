@@ -7,7 +7,7 @@ ForrestHaunting = function( id ){
 	this.c = this.canvas.getContext( "2d" );	
 	this.currentScene = [];	
 	this.inDoors = false;
-	this.startPressed = true;
+	this.startPressed = false;
 	this.action = false;
 	this.moveDown = false;
 	this.moveUp = false;
@@ -21,7 +21,7 @@ ForrestHaunting = function( id ){
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3, this.canvas.height / 4 );	
 	this.firstMap(-300,-100);
-	// this.mainScreen();
+	this.mainScreen();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
 	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
@@ -35,7 +35,7 @@ ForrestHaunting.prototype.onMouseDown = function( event ) {
     
     // Check collision with startButton
     if ( !this.startPressed && this.startButton.x <  mouseX && this.startButton.x + this.startButton.width >  mouseX && this.startButton.y <  mouseY && this.startButton.y + this.startButton.height >  mouseY) {
-		this.firstMap();
+		this.firstMap( 1100,-550 );
 		this.startPressed = true;
     }
 }
@@ -125,12 +125,12 @@ ForrestHaunting.prototype.movementLogic = function(){
 }
 ForrestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
-	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between(item,this.currentScene[this.enemyLoc] )<= 600) {
+	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
 		if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
-			console.log("ghost within the range")
-			this.currentScene[this.enemyLoc].movementDirection = -1;
+			// console.log("ghost within the range")
+			this.currentScene[ this.enemyLoc ].movementDirection = -1;
 		}
-		else if(distance_between( this.currentScene[this.enemyLoc], item ) > 550) {
+		else if(distance_between( this.currentScene[ this.enemyLoc ], item ) > 550) {
 			this.currentScene[this.enemyLoc].movementDirection = 1;
 		}
 		
@@ -223,10 +223,10 @@ ForrestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 	this.currentScene = [];
 	
 	for (let i = 0; i < 5; i++) {
-		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, -100, 600, 200));
-		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, 1100, 600, 200));
-		this.currentScene.push(new ForrestLineSide( -1650, (i * 500)-100, 150, 500));
-		this.currentScene.push(new ForrestLineSide( 1450, (i * 500)-100, 150, 500));
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500+ startPosX, -100+ startPosY, 600, 200));
+		this.currentScene.push(new ForrestLineTop((i * 600) - 1500+ startPosX, 1100+ startPosY, 600, 200));
+		this.currentScene.push(new ForrestLineSide( -1650+ startPosX, (i * 500)-100+ startPosY, 150, 500));
+		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
 	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,950 + startPosY,200,100),new makeTotem(700 + startPosX,500 + startPosY,200,100)/**/,
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
