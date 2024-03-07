@@ -20,7 +20,7 @@ ForrestHaunting = function( id ){
 	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Start Game" );	
-	this.currentTitle = new MakeTitle( 290,100,"ForrestHaunting" );
+	this.currentTitle = new MakeTitle( 290, 100, "ForrestHaunting" );
 	this.firstMap(-300,-100);
 	this.mainScreen();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
@@ -161,7 +161,7 @@ ForrestHaunting.prototype.collisionLogic = function( item, index ){
 		// detection for player and enemy
 		if( item.enemy ){
 			if( distance_between( this.mainPlayer, item ) < 65 ){
-				console.log("ghost kill me");
+				// console.log("ghost kill me");
 				this.mainScreen();
 				this.currentTitle.buttonText = "You Died....";
 				this.startButton.buttonText = "Restart";
@@ -189,7 +189,7 @@ ForrestHaunting.prototype.collisionLogic = function( item, index ){
 		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&
 		this.mainPlayer.y < item.y + item.height - 50 && this.mainPlayer.y+100 > item.y ){	
 			if ( item.isCar && this.action && this.mainPlayer.hasKey ) {			
-				this.mainScreen();
+				this.winScreen();
 			}
 			if( this.mainPlayer.x < item.x ){					
 				this.rightCollision = true;					
@@ -214,7 +214,14 @@ ForrestHaunting.prototype.mainScreen = function(  ){
 	this.mainPlayer.hasKey = false;
 	this.startPressed = false;
 	this.currentScene = [];	
-	this.currentScene.push(this.startButton, this.currentTitle);  
+	this.currentScene.push( this.startButton, this.currentTitle ); 
+}
+ForrestHaunting.prototype.winScreen = function(  ){
+	// this.mainPlayer.hasKey = false;
+	// this.startPressed = false;
+	this.currentScene = [];	
+	this.currentScene.push( new MakeTitle( 290, 100, "ForrestHaunting" ), new MakeTitle( 290, 300, "by Latamata" ) );  
+	console.log("win")
 }
 ForrestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
