@@ -27,7 +27,7 @@ function MakePlayer( x, y ){
 	this.hasKey = false;
 }
 MakePlayer.prototype.update = function( elapsed ){
-	console.log(this.running);
+	console.log(this.hasKey);
 	if(this.running){
 		this.speed = 4;
 	} else{

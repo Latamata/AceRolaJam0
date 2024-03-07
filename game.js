@@ -1,7 +1,7 @@
 function distance_between( obj1, obj2 ){
 	return Math.sqrt( Math.pow( obj1.x - obj2.x, 2 ) + Math.pow( obj1.y - obj2.y, 2 ));
 }
-IslandAberration = function( id ){
+ForrestHaunting = function( id ){
 	
 	this.canvas = document.getElementById( id );
 	this.c = this.canvas.getContext( "2d" );	
@@ -20,16 +20,16 @@ IslandAberration = function( id ){
 	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3, this.canvas.height / 4 );	
-	// this.firstMap(-300,-100);
-	this.firstHouse();
+	this.firstMap(-300,-100);
+	// this.mainScreen();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
-	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind(this));
+	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
 	this.canvas.focus();
 	window.requestAnimationFrame( this.frame.bind( this ));	
 	
 }
-IslandAberration.prototype.onMouseDown = function(event) {
+ForrestHaunting.prototype.onMouseDown = function( event ) {
     var mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
     var mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
     
@@ -39,13 +39,13 @@ IslandAberration.prototype.onMouseDown = function(event) {
 		this.startPressed = true;
     }
 }
-IslandAberration.prototype.keyDown = function( e ){
+ForrestHaunting.prototype.keyDown = function( e ){
 	this.key_handler(e, true);	
 }
-IslandAberration.prototype.keyUp = function( e ){
+ForrestHaunting.prototype.keyUp = function( e ){
 	this.key_handler( e, false );	
 }
-IslandAberration.prototype.key_handler = function( e, value ){
+ForrestHaunting.prototype.key_handler = function( e, value ){
     var nothing_handled = false;
     switch( e.key || e.keyCode ){
         case "ArrowLeft":
@@ -86,7 +86,7 @@ IslandAberration.prototype.key_handler = function( e, value ){
     }
     if(!nothing_handled) e.preventDefault();
 }
-IslandAberration.prototype.frame = function( timestamp ) {
+ForrestHaunting.prototype.frame = function( timestamp ) {
 	if ( !this.previous ) this.previous = timestamp;
 	var elapsed = timestamp - this.previous;
 	this.fps = 1000 / elapsed;
@@ -95,7 +95,7 @@ IslandAberration.prototype.frame = function( timestamp ) {
 	this.previous = timestamp;
 	window.requestAnimationFrame( this.frame.bind( this ));
 }
-IslandAberration.prototype.movementLogic = function(){	
+ForrestHaunting.prototype.movementLogic = function(){	
 	if ( this.moveRight && !this.moveLeft && !this.rightCollision) {
 		// wow this is actually not running
 		// console.log("runningright");	
@@ -123,7 +123,7 @@ IslandAberration.prototype.movementLogic = function(){
 		this.upCollision = false;
 	}
 }
-IslandAberration.prototype.collisionLogic = function( item, index ){
+ForrestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between(item,this.currentScene[this.enemyLoc] )<= 600) {
 		if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
@@ -185,7 +185,7 @@ IslandAberration.prototype.collisionLogic = function( item, index ){
 		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&
 		this.mainPlayer.y < item.y + item.height - 50 && this.mainPlayer.y+100 > item.y ){	
 			if ( item.isCar && this.action && this.mainPlayer.hasKey ) {			
-				console.log("win game")
+				this.mainScreen();
 			}
 			if( this.mainPlayer.x < item.x ){					
 				this.rightCollision = true;					
@@ -206,17 +206,22 @@ IslandAberration.prototype.collisionLogic = function( item, index ){
 		}			
 	}				
 }
-IslandAberration.prototype.mainScreen = function(  ){	
+ForrestHaunting.prototype.mainScreen = function(  ){
+	this.currentScene = [];	
 	this.currentScene.push(this.startButton);  
 }
-IslandAberration.prototype.firstHouse = function(  ){	
+ForrestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
-	this.currentScene.push( new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), new MakeKey(325,0,50,50) );    
+	
+	this.currentScene.push(  new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer );  
+	if( !this.mainPlayer.hasKey ){	
+		this.currentScene.push( new MakeKey(325,0,50,50) );    	
+	}	
 	this.inDoors = true;
 }
-IslandAberration.prototype.firstMap = function( startPosX, startPosY ){	
+ForrestHaunting.prototype.firstMap = function( startPosX, startPosY ){	
 	this.currentScene = [];
-	// this.currentScene.push( this.mainPlayer ); 
+	
 	for (let i = 0; i < 5; i++) {
 		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, -100, 600, 200));
 		this.currentScene.push(new ForrestLineTop((i * 600) - 1500, 1100, 600, 200));
@@ -225,27 +230,28 @@ IslandAberration.prototype.firstMap = function( startPosX, startPosY ){
 	}
 	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,950 + startPosY,200,100),new makeTotem(700 + startPosX,500 + startPosY,200,100)/**/,
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
-	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
+	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
+	this.currentScene.push( this.mainPlayer ); 	
     this.inDoors = false;
 }
-let totemDischeck = 100;
-IslandAberration.prototype.update = function( elapsed ) {
+ForrestHaunting.prototype.update = function( elapsed ) {
 	
 	this.movementLogic();
 	this.currentScene.forEach(function( item, index ){		
 		
 		this.collisionLogic( item, index );
 		item.update( elapsed, this.mainPlayer.x_speed, this.mainPlayer.y_speed );
-	}.bind(this));
+		
+	}.bind( this ));
 }	
-IslandAberration.prototype.draw = function() {
+ForrestHaunting.prototype.draw = function() {
 	this.c.clearRect( 0, 0, this.canvas.width, this.canvas.height );	
 	
 	this.currentScene.forEach(function( item ){
 		// console.log( item )
 		item.draw( this.c )
 		
-	}.bind(this));
-	this.mainPlayer.draw( this.c)
+	}.bind( this ));	
+	// this.mainPlayer.draw( this.c )
 }
 
