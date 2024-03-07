@@ -111,7 +111,6 @@ makeCar.prototype.draw = function( c ){
 	draw_car( c );
 	c.restore();
 }
-
 // ======================================================
 function makeTotem( x, y, width, height ){
 	this.super( x, y );
@@ -120,7 +119,7 @@ function makeTotem( x, y, width, height ){
 	this.isTotem = true;
 }
 extend( makeTotem, TopDownPlayerMovement );
-makeTotem.prototype.update = function( c ){
+makeTotem.prototype.update = function( c, ghost ){
 	
 	TopDownPlayerMovement.prototype.update.apply( this, arguments );
 }

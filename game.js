@@ -123,8 +123,21 @@ IslandAberration.prototype.movementLogic = function(){
 		this.upCollision = false;
 	}
 }
-IslandAberration.prototype.collisionLogic = function( item ){
-	
+IslandAberration.prototype.collisionLogic = function( item, index ){
+	// interaction between the ghost and totem 			
+	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between(item,this.currentScene[this.enemyLoc] )<= 600) {
+		if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
+			console.log("ghost within the range")
+			this.currentScene[this.enemyLoc].movementDirection = -1;
+		}
+		else if(distance_between( this.currentScene[this.enemyLoc], item ) > 550) {
+			this.currentScene[this.enemyLoc].movementDirection = 1;
+		}
+		
+	}
+	if ( item.enemy ) {
+			this.enemyLoc = index; // Set this.enemyLoc when encountering an enemy
+		}
 	if( item.inZone && this.action ){
 			// console.log("inzone")
 			if(this.inDoors){
@@ -135,6 +148,38 @@ IslandAberration.prototype.collisionLogic = function( item ){
 			}
 			this.action = false;			
 	}
+	
+	if ( item.isKey ) {			
+			if(distance_between( this.mainPlayer, item ) < 50 ){	
+			
+				this.currentScene.splice( index, 1 );
+				this.mainPlayer.hasKey = true;
+				console.log(this.mainPlayer.hasKey)
+			}
+		}
+		// detection for player and enemy
+		if( item.enemy ){
+			if( distance_between( this.mainPlayer, item ) < 65 ){
+				console.log("ghost kill me")
+			}
+			this.enemyLoc = index;
+			// console.log(distance_between(item, this.mainPlayer))
+			// Reverse movement direction if needed
+			let xSpeed = 2 * item.movementDirection;
+			let ySpeed = 2 * item.movementDirection;
+
+			// Adjust position based on player position
+			if (item.x < this.mainPlayer.x) {
+				item.x += xSpeed;
+			} else {
+				item.x -= xSpeed;
+			}
+			if (item.y < this.mainPlayer.y) {
+				item.y += ySpeed;
+			} else {
+				item.y -= ySpeed;
+			}			
+		}
 	if( item.collision ){
 		
 		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&
@@ -178,61 +223,18 @@ IslandAberration.prototype.firstMap = function( startPosX, startPosY ){
 		this.currentScene.push(new ForrestLineSide( -1650, (i * 500)-100, 150, 500));
 		this.currentScene.push(new ForrestLineSide( 1450, (i * 500)-100, 150, 500));
 	}
-	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,950 + startPosY,200,100),new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,950 + startPosY,200,100),new makeTotem(700 + startPosX,500 + startPosY,200,100)/**/,
+	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
+	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));    
     this.inDoors = false;
 }
-
+let totemDischeck = 100;
 IslandAberration.prototype.update = function( elapsed ) {
 	
 	this.movementLogic();
-	this.currentScene.forEach(function( item, index ){
-		// interaction between the ghost and totem 	
+	this.currentScene.forEach(function( item, index ){		
 		
-		if ( item.isKey ) {			
-			if(distance_between( this.mainPlayer, item ) < 50 ){	
-			
-				this.currentScene.splice( index, 1 );
-				this.mainPlayer.hasKey = true;
-				console.log(this.mainPlayer.hasKey)
-			}
-		}
-		if ( item.enemy ) {
-			this.enemyLoc = index; // Set this.enemyLoc when encountering an enemy
-		}
-		if ( item.isTotem && this.enemyLoc !== -1 && this.currentScene[ this.enemyLoc ] && item && !this.inDoors ) {
-			// console.log(distance_between( this.currentScene[this.enemyLoc], item ));
-			if(distance_between( this.currentScene[this.enemyLoc], item ) < 100){
-				// console.log("ghost within the range")
-				this.currentScene[this.enemyLoc].movementDirection = -1;
-			}
-			else if(distance_between( this.currentScene[this.enemyLoc], item ) > 1000){
-				this.currentScene[this.enemyLoc].movementDirection = 1;
-			}
-		}
-		// detection for player and enemy
-		if( item.enemy ){
-			if( distance_between( this.mainPlayer, item ) < 65 ){
-				console.log("ghost kill me")
-			}
-			this.enemyLoc = index;
-			// console.log(distance_between(item, this.mainPlayer))
-			// Reverse movement direction if needed
-			let xSpeed = 2 * item.movementDirection;
-			let ySpeed = 2 * item.movementDirection;
-
-			// Adjust position based on player position
-			if (item.x < this.mainPlayer.x) {
-				item.x += xSpeed;
-			} else {
-				item.x -= xSpeed;
-			}
-			if (item.y < this.mainPlayer.y) {
-				item.y += ySpeed;
-			} else {
-				item.y -= ySpeed;
-			}			
-		}
-		this.collisionLogic( item );
+		this.collisionLogic( item, index );
 		item.update( elapsed, this.mainPlayer.x_speed, this.mainPlayer.y_speed );
 	}.bind(this));
 }	
