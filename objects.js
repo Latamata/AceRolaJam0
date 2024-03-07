@@ -119,7 +119,7 @@ function makeTotem( x, y, width, height ){
 	this.isTotem = true;
 }
 extend( makeTotem, TopDownPlayerMovement );
-makeTotem.prototype.update = function( c, ghost ){
+makeTotem.prototype.update = function( c ){
 	
 	TopDownPlayerMovement.prototype.update.apply( this, arguments );
 }
