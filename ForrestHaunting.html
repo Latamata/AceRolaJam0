@@ -2,7 +2,7 @@
 <html>
 
 	<head>
-		<title>ForrestHaunting</title>
+		<title>ForestHaunting</title>
 		<link rel="stylesheet" href="style.css">
 		<script src="drawing.js"></script>
 		<script src="objects.js"></script>
@@ -16,13 +16,19 @@
 		<img id="totem" src="assets/totem.png" hidden>
 		<img id="car" src="assets/car.png" hidden>
 		<img id="keys" src="assets/keys.png" hidden>
+		<img id="wallside" src="assets/wall.png" hidden>
+		<audio id="myAudio" controls hidden>
+		<source src="assets/carsound.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+
 	</head>
 	
 	<body>
-		<h1>ForrestHaunting</h1>
-		<canvas id="ForrestHaunting" width="1000" height="600" tabindex="1"></canvas>
+		<h1>ForestHaunting</h1>
+		<canvas id="ForestHaunting" width="1000" height="600" tabindex="1"></canvas>
 		<script>	
-			var game = new ForrestHaunting("ForrestHaunting");
+			var game = new ForestHaunting("ForestHaunting");
 		</script>
 	</body>
 	

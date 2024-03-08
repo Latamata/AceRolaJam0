@@ -19,6 +19,58 @@ function draw_button( ctx, text ) {
     ctx.restore();
 }
 // =======================================
+function draw_wall( ctx, side ){
+	
+	let picture = document.getElementById('wallside');
+	if(side === "top"){
+		ctx.save();
+		ctx.rotate(-Math.PI / 2);
+		ctx.drawImage( picture, 0, 0 );
+		ctx.restore();		
+	}
+	else if(side === "left"){
+		ctx.save();	
+		ctx.scale(-1, -1); // Scale vertically by -1
+		ctx.drawImage(picture, -picture.width, -picture.height); // Draw the image
+		// ctx.drawImage( picture, 0, 0 );
+		ctx.restore();
+	} else if(side === "bot"){
+		ctx.save();
+		ctx.rotate(-Math.PI / 2);
+		ctx.scale( -1, -1); // Scale vertically by -1
+		ctx.drawImage(picture, picture.width-30, -picture.height); // Draw the image
+		ctx.restore();	
+	}
+	else{
+		ctx.save();	
+		// ctx.scale(-1, -1); // Scale vertically by -1
+		// ctx.drawImage(picture, -picture.width, -picture.height); // Draw the image
+		ctx.drawImage( picture, 0, 0 );
+		ctx.restore();
+	}
+	// ctx.save();	
+	// ctx.restore();
+	// Rotate the canvas 90 degrees counterclockwise
+	// Rotate the canvas 90 degrees counterclockwise
+	
+
+	// Draw the image (assuming width and height are already swapped)
+	// ctx.drawImage(picture, -picture.height, 0);		
+	
+	// Horizontal flip
+	// ctx.save(); // Save the current transformation state
+	// ctx.scale(-1, 1); // Scale horizontally by -1
+	// ctx.drawImage(picture, -picture.width, 0); // Draw the image
+	// ctx.restore(); // Restore the previous transformation state
+
+	// Vertical flip
+	// ctx.save(); // Save the current transformation state
+	// ctx.scale(1, -1); // Scale vertically by -1
+	// ctx.drawImage(picture, 0, -picture.height); // Draw the image
+	// ctx.restore(); // Restore the previous transformation state
+
+}
+// =======================================
 function draw_key( ctx ){
 	let picture = document.getElementById('keys');
 	ctx.save();

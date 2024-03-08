@@ -1,7 +1,7 @@
 function distance_between( obj1, obj2 ){
 	return Math.sqrt( Math.pow( obj1.x - obj2.x, 2 ) + Math.pow( obj1.y - obj2.y, 2 ));
 }
-ForrestHaunting = function( id ){
+ForestHaunting = function( id ){
 	
 	this.canvas = document.getElementById( id );
 	this.c = this.canvas.getContext( "2d" );	
@@ -20,9 +20,9 @@ ForrestHaunting = function( id ){
 	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Start Game" );	
-	this.currentTitle = new MakeTitle( 290, 100, "ForrestHaunting" );
-	this.firstMap(-300,-100);
-	this.mainScreen();
+	this.currentTitle = new MakeTitle( 290, 100, "ForestHaunting" );
+	this.firstHouse();
+	// this.mainScreen();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
 	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
@@ -30,7 +30,11 @@ ForrestHaunting = function( id ){
 	window.requestAnimationFrame( this.frame.bind( this ));	
 	
 }
-ForrestHaunting.prototype.onMouseDown = function( event ) {
+function playSound() {
+  var audio = document.getElementById('myAudio');
+  audio.play();
+}
+ForestHaunting.prototype.onMouseDown = function( event ) {
     var mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
     var mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
     
@@ -40,13 +44,13 @@ ForrestHaunting.prototype.onMouseDown = function( event ) {
 		this.startPressed = true;
     }
 }
-ForrestHaunting.prototype.keyDown = function( e ){
+ForestHaunting.prototype.keyDown = function( e ){
 	this.key_handler( e, true );	
 }
-ForrestHaunting.prototype.keyUp = function( e ){
+ForestHaunting.prototype.keyUp = function( e ){
 	this.key_handler( e, false );	
 }
-ForrestHaunting.prototype.key_handler = function( e, value ){
+ForestHaunting.prototype.key_handler = function( e, value ){
     var nothing_handled = false;
     switch( e.key || e.keyCode ){
         case "ArrowLeft":
@@ -87,7 +91,7 @@ ForrestHaunting.prototype.key_handler = function( e, value ){
     }
     if(!nothing_handled) e.preventDefault();
 }
-ForrestHaunting.prototype.frame = function( timestamp ) {
+ForestHaunting.prototype.frame = function( timestamp ) {
 	if ( !this.previous ) this.previous = timestamp;
 	var elapsed = timestamp - this.previous;
 	this.fps = 1000 / elapsed;
@@ -96,7 +100,7 @@ ForrestHaunting.prototype.frame = function( timestamp ) {
 	this.previous = timestamp;
 	window.requestAnimationFrame( this.frame.bind( this ));
 }
-ForrestHaunting.prototype.movementLogic = function(){	
+ForestHaunting.prototype.movementLogic = function(){	
 	if ( this.moveRight && !this.moveLeft && !this.rightCollision) {
 		// wow this is actually not running
 		// console.log("runningright");	
@@ -124,7 +128,7 @@ ForrestHaunting.prototype.movementLogic = function(){
 		this.upCollision = false;
 	}
 }
-ForrestHaunting.prototype.collisionLogic = function( item, index ){
+ForestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
 		if(distance_between( this.currentScene[ this.enemyLoc ], item ) < 100){
@@ -210,29 +214,30 @@ ForrestHaunting.prototype.collisionLogic = function( item, index ){
 		}			
 	}				
 }
-ForrestHaunting.prototype.mainScreen = function(  ){
+ForestHaunting.prototype.mainScreen = function(  ){
 	this.mainPlayer.hasKey = false;
 	this.startPressed = false;
 	this.currentScene = [];	
 	this.currentScene.push( this.startButton, this.currentTitle ); 
 }
-ForrestHaunting.prototype.winScreen = function(  ){
+ForestHaunting.prototype.winScreen = function(  ){
 	// this.mainPlayer.hasKey = false;
 	// this.startPressed = false;
+	playSound();
 	this.currentScene = [];	
-	this.currentScene.push( new MakeTitle( 290, 100, "ForrestHaunting" ), new MakeTitle( 290, 300, "by Latamata" ) );  
+	this.currentScene.push( new MakeTitle( 290, 100, "ForestHaunting" ), new MakeTitle( 290, 300, "Created by Latamata" ) );  
 	console.log("win")
 }
-ForrestHaunting.prototype.firstHouse = function(  ){	
+ForestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
 	
-	this.currentScene.push(  new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer );  
+	this.currentScene.push(  new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer, new MakeWallSide(725,-40,100,450,false), new MakeWallSide(290,0,400,60,"top"), new MakeWallSide(290,0,40,400,"left"), new MakeWallSide(325,390,400,30,"bot") );  
 	if( !this.mainPlayer.hasKey ){	
 		this.currentScene.push( new MakeKey(325,0,50,50) );    	
 	}	
 	this.inDoors = true;
 }
-ForrestHaunting.prototype.firstMap = function( startPosX, startPosY ){	
+ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){	
 	this.currentScene = [];
 	
 	for (let i = 0; i < 5; i++) {
@@ -247,7 +252,7 @@ ForrestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 	this.currentScene.push( this.mainPlayer ); 	
     this.inDoors = false;
 }
-ForrestHaunting.prototype.update = function( elapsed ) {
+ForestHaunting.prototype.update = function( elapsed ) {
 	
 	this.movementLogic();
 	this.currentScene.forEach(function( item, index ){		
@@ -257,7 +262,7 @@ ForrestHaunting.prototype.update = function( elapsed ) {
 		
 	}.bind( this ));
 }	
-ForrestHaunting.prototype.draw = function() {
+ForestHaunting.prototype.draw = function() {
 	this.c.clearRect( 0, 0, this.canvas.width, this.canvas.height );	
 	
 	this.currentScene.forEach(function( item ){
@@ -265,6 +270,6 @@ ForrestHaunting.prototype.draw = function() {
 		item.draw( this.c )
 		
 	}.bind( this ));	
-	
+	// draw_wall(this.c);
 }
 

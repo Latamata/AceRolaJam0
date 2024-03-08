@@ -62,6 +62,21 @@ MakeAberration.prototype.draw = function( c ){
 	c.restore();
 }
 // ======================================================
+function MakeWallSide( x, y, width, height, side ){
+	this.super( x, y );
+	this.width = width;
+	this.height = height;
+	this.side = side;
+	this.collision = true;
+}
+extend( MakeWallSide, TopDownPlayerMovement );
+MakeWallSide.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_wall( c, this.side );
+	c.restore();
+}
+// ======================================================
 function ForrestLineSide( x, y, width, height ){
 	this.super( x, y );
 	this.width = width;
