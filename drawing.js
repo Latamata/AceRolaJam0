@@ -120,11 +120,18 @@ function draw_aberration( ctx ){
 	ctx.restore();
 }
 // =======================================
-function draw_maindude( ctx, currentFrame ){
+function draw_maindude( ctx, currentFrame, direction ){
 	let picture = document.getElementById('body');
 	ctx.save();
 	// ctx.drawImage( picture, 0, 0 );
-	ctx.drawImage( picture, currentFrame * 57, 0, 57, 100, 0, 0, 57, 100 );		
+	if(direction){	
+		ctx.scale(-1, 1);			
+		// Draw the image with the flipped horizontal position
+		ctx.drawImage(picture, currentFrame * 57, 0, 57, 100, -57, 0, 57, 100);	
+	}
+	else{
+		ctx.drawImage( picture, currentFrame * 57, 0, 57, 100, 0, 0, 57, 100 );	
+	}
 	// ctx.drawImage( blueSymbol, currentFrame * spriteWidth, 0, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight );
 	// ctx.beginPath();
 	// ctx.strokeStyle = "white";

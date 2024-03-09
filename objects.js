@@ -25,6 +25,7 @@ function MakePlayer( x, y ){
 	this.width = this.x + 100;
 	this.currentFrame = 0;	
 	this.elapsedTime = 0;
+	this.direction = false;
 	this.hasKey = false;
 }
 MakePlayer.prototype.update = function(elapsed) {
@@ -42,6 +43,12 @@ MakePlayer.prototype.update = function(elapsed) {
 
         // Reset elapsed time
         this.elapsedTime = 0;
+		if(this.x_speed < 0){
+			this.direction = true;
+		}
+		else{
+			this.direction = false;
+		}
     }
 	if(	this.x_speed === 0 && this.y_speed === 0){
 		this.currentFrame = 0;
@@ -51,7 +58,7 @@ MakePlayer.prototype.update = function(elapsed) {
 MakePlayer.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );
-	draw_maindude( c, this.currentFrame );
+	draw_maindude( c, this.currentFrame,this.direction );
 	c.restore();
 }
 // ======================================================
