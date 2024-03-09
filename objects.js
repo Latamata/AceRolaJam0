@@ -21,26 +21,37 @@ function MakePlayer( x, y ){
 	this.x_speed = 0;
 	this.y_speed = 0;
 	this.speed = 2;
-	this.running = false;
 	this.height = this.y + 100;
 	this.width = this.x + 100;
+	this.currentFrame = 0;	
+	this.elapsedTime = 0;
 	this.hasKey = false;
 }
-MakePlayer.prototype.update = function( elapsed ){
-	// console.log(this.hasKey);
-	// I dont know if I want to have run
-	if(this.running){
-		this.speed = 4;
-	} else{
-		this.speed = 2;
-		this.running = false;
-	}
+MakePlayer.prototype.update = function(elapsed) {
 	
-}
+    // Define the duration for each frame
+    var frameDuration = 0.5; // in seconds, adjust as needed
+
+    // Accumulate elapsed time
+    this.elapsedTime += elapsed;
+
+    // Check if it's time to switch frames
+    if (this.elapsedTime >= frameDuration) {
+        // Increment current frame
+        this.currentFrame = (this.currentFrame % 2) + 1; // Loop between frames 1 and 2
+
+        // Reset elapsed time
+        this.elapsedTime = 0;
+    }
+	if(	this.x_speed === 0 && this.y_speed === 0){
+		this.currentFrame = 0;
+	}
+};
+
 MakePlayer.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );
-	draw_maindude( c );
+	draw_maindude( c, this.currentFrame );
 	c.restore();
 }
 // ======================================================

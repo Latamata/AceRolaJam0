@@ -48,27 +48,6 @@ function draw_wall( ctx, side ){
 		ctx.drawImage( picture, 0, 0 );
 		ctx.restore();
 	}
-	// ctx.save();	
-	// ctx.restore();
-	// Rotate the canvas 90 degrees counterclockwise
-	// Rotate the canvas 90 degrees counterclockwise
-	
-
-	// Draw the image (assuming width and height are already swapped)
-	// ctx.drawImage(picture, -picture.height, 0);		
-	
-	// Horizontal flip
-	// ctx.save(); // Save the current transformation state
-	// ctx.scale(-1, 1); // Scale horizontally by -1
-	// ctx.drawImage(picture, -picture.width, 0); // Draw the image
-	// ctx.restore(); // Restore the previous transformation state
-
-	// Vertical flip
-	// ctx.save(); // Save the current transformation state
-	// ctx.scale(1, -1); // Scale vertically by -1
-	// ctx.drawImage(picture, 0, -picture.height); // Draw the image
-	// ctx.restore(); // Restore the previous transformation state
-
 }
 // =======================================
 function draw_key( ctx ){
@@ -141,10 +120,12 @@ function draw_aberration( ctx ){
 	ctx.restore();
 }
 // =======================================
-function draw_maindude( ctx ){
+function draw_maindude( ctx, currentFrame ){
 	let picture = document.getElementById('body');
 	ctx.save();
-	ctx.drawImage( picture, 0, 0 );
+	// ctx.drawImage( picture, 0, 0 );
+	ctx.drawImage( picture, currentFrame * 57, 0, 57, 100, 0, 0, 57, 100 );		
+	// ctx.drawImage( blueSymbol, currentFrame * spriteWidth, 0, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight );
 	// ctx.beginPath();
 	// ctx.strokeStyle = "white";
 	// ctx.fillStyle = "yellow";
