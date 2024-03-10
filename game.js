@@ -100,34 +100,40 @@ ForestHaunting.prototype.frame = function( timestamp ) {
 	this.previous = timestamp;
 	window.requestAnimationFrame( this.frame.bind( this ));
 }
-ForestHaunting.prototype.movementLogic = function(){	
-	if ( this.moveRight && !this.moveLeft && !this.rightCollision) {
-		// wow this is actually not running
-		// console.log("runningright");	
-		this.mainPlayer.x_speed = -this.mainPlayer.speed;							
-	}	
-	else if( this.moveLeft && !this.moveRight && !this.leftCollision ){
-		this.mainPlayer.x_speed = this.mainPlayer.speed;				
-	}
-	else{
-		this.mainPlayer.x_speed = 0;	
-		this.leftCollision = false;
-		this.rightCollision = false;
-	}
-	if( this.moveUp && !this.moveDown && !this.upCollision){
-		this.mainPlayer.y_speed = this.mainPlayer.speed;				
-	}
-	else if( this.moveDown && !this.moveUp && !this.downCollision ){
-		this.mainPlayer.y_speed = -this.mainPlayer.speed;				
-	}
-	else{		
-		// reset is not causing collision issue
-		this.mainPlayer.y_speed = 0;		
-		// im putting the reset of collision here since it seems to make it more fluid with movement
-		this.downCollision = false;
-		this.upCollision = false;
-	}
+ForestHaunting.prototype.movementLogic = function() {
+    // Calculate diagonal speed
+    var diagonalSpeed = Math.sqrt(this.mainPlayer.speed * this.mainPlayer.speed / 2);
+    
+    // Horizontal movement
+    if (this.moveRight && !this.moveLeft && !this.rightCollision) {
+        this.mainPlayer.x_speed = -this.mainPlayer.speed;
+    } else if (this.moveLeft && !this.moveRight && !this.leftCollision) {
+        this.mainPlayer.x_speed = this.mainPlayer.speed;
+    } else {
+        this.mainPlayer.x_speed = 0;
+        this.leftCollision = false;
+        this.rightCollision = false;
+    }
+
+    // Vertical movement
+    if (this.moveUp && !this.moveDown && !this.upCollision) {
+        this.mainPlayer.y_speed = this.mainPlayer.speed;
+    } else if (this.moveDown && !this.moveUp && !this.downCollision) {
+        this.mainPlayer.y_speed = -this.mainPlayer.speed;
+    } else {
+        this.mainPlayer.y_speed = 0;
+        this.downCollision = false;
+        this.upCollision = false;
+    }
+
+    // Diagonal movement
+    if ((this.moveRight || this.moveLeft) && (this.moveUp || this.moveDown)) {
+        // Diagonal movement: adjust speed
+        this.mainPlayer.x_speed = (this.moveRight ? -diagonalSpeed : (this.moveLeft ? diagonalSpeed : 0));
+        this.mainPlayer.y_speed = (this.moveUp ? diagonalSpeed : (this.moveDown ? -diagonalSpeed : 0));
+    }
 }
+
 ForestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
