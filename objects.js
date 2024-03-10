@@ -146,21 +146,21 @@ makeCar.prototype.draw = function( c ){
 	c.restore();
 }
 // ======================================================
-function makeTotem( x, y, width, height ){
+function MakeSaltCircle( x, y, width, height ){
 	this.super( x, y );
 	// this.width = width;
 	// this.height = height;
 	this.isTotem = true;
 }
-extend( makeTotem, TopDownPlayerMovement );
-makeTotem.prototype.update = function( c ){
+extend( MakeSaltCircle, TopDownPlayerMovement );
+MakeSaltCircle.prototype.update = function( c ){
 	
 	TopDownPlayerMovement.prototype.update.apply( this, arguments );
 }
-makeTotem.prototype.draw = function( c ){
+MakeSaltCircle.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );	
-	draw_totem( c );
+	draw_saltcircle( c );
 	c.restore();
 }
 // ======================================================

@@ -64,10 +64,10 @@ function draw_car( ctx ){
 	ctx.restore();
 }
 // =======================================
-function draw_totem( ctx ){
+function draw_saltcircle( ctx ){
 	let picture = document.getElementById('totem');
 	ctx.save();
-	ctx.drawImage( picture, 0, 0 );
+	ctx.drawImage( picture, 0, 30 );
 	ctx.restore();
 }
 // =======================================
@@ -100,15 +100,10 @@ function draw_forrestline( ctx ){
 }
 // =======================================
 function draw_house_floor( ctx, width, height ){
-	// let table = document.getElementById('table');
 	ctx.save();
 	ctx.beginPath();
 	ctx.rect( 0, 0, width, height );
-	// ctx.drawImage(table, 0, 0);
-	// ctx.strokeStyle = "white";
 	ctx.fillStyle = "brown";
-	// ctx.strokeStyle = "white";
-	// ctx.stroke();
 	ctx.fill();
 	ctx.restore();
 }
@@ -132,13 +127,6 @@ function draw_maindude( ctx, currentFrame, direction ){
 	else{
 		ctx.drawImage( picture, currentFrame * 57, 0, 57, 100, 0, 0, 57, 100 );	
 	}
-	// ctx.drawImage( blueSymbol, currentFrame * spriteWidth, 0, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight );
-	// ctx.beginPath();
-	// ctx.strokeStyle = "white";
-	// ctx.fillStyle = "yellow";
-	// ctx.rect( 0, 0, 100, 100 );
-	// ctx.stroke();
-	// ctx.fill();
 	ctx.restore();
 
 }

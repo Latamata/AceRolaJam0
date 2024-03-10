@@ -131,7 +131,7 @@ ForestHaunting.prototype.movementLogic = function(){
 ForestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
-		if(distance_between( this.currentScene[ this.enemyLoc ], item ) < 100){
+		if(distance_between( this.currentScene[ this.enemyLoc ], item ) < 60){
 			// console.log("ghost within the range")
 			this.currentScene[ this.enemyLoc ].movementDirection = -1;
 		}
@@ -246,7 +246,7 @@ ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 		this.currentScene.push(new ForrestLineSide( -1650+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
-	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new makeTotem(-810 + startPosX,50 + startPosY,200,100),new makeTotem(-920 + startPosX,950 + startPosY,200,100),new makeTotem(700 + startPosX,500 + startPosY,200,100)/**/,
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new MakeSaltCircle(-810 + startPosX,50 + startPosY,200,100),new MakeSaltCircle(-920 + startPosX,950 + startPosY,200,100),new MakeSaltCircle(700 + startPosX,500 + startPosY,200,100)/**/,
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
 	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
 	this.currentScene.push( this.mainPlayer ); 	
