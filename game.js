@@ -8,6 +8,7 @@ ForestHaunting = function( id ){
 	this.currentScene = [];	
 	this.inDoors = false;
 	this.startPressed = false;
+	this.infoPressed = true;
 	this.action = false;
 	this.moveDown = false;
 	this.moveUp = false;
@@ -20,9 +21,10 @@ ForestHaunting = function( id ){
 	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Start Game" );	
+	this.infoButton = new MakeInfo(280,50,"this is the text that will tell player the 411");	
 	this.currentTitle = new MakeTitle( 290, 100, "ForestHaunting" );
-	this.firstHouse();
-	// this.mainScreen();
+	// this.firstHouse();
+	this.mainScreen(false);
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
 	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
@@ -38,10 +40,17 @@ ForestHaunting.prototype.onMouseDown = function( event ) {
     var mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
     var mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
     
+		// console.log("sup");		
     // Check collision with startButton
-    if ( !this.startPressed && this.startButton.x <  mouseX && this.startButton.x + this.startButton.width >  mouseX && this.startButton.y <  mouseY && this.startButton.y + this.startButton.height >  mouseY) {
+    if ( !this.infoPressed && this.infoButton.x <  mouseX && this.infoButton.x + this.infoButton.width >  mouseX && this.infoButton.y <  mouseY && this.infoButton.y + this.infoButton.height >  mouseY) {
+		this.infoPressed = true;
 		this.firstMap( 1100, -550 );
+    }
+	if ( !this.startPressed && this.startButton.x <  mouseX && this.startButton.x + this.startButton.width >  mouseX && this.startButton.y <  mouseY && this.startButton.y + this.startButton.height >  mouseY) {
+		this.mainScreen( true );
 		this.startPressed = true;
+		this.mainPlayer.hasKey = false;
+		this.infoPressed = false;
     }
 }
 ForestHaunting.prototype.keyDown = function( e ){
@@ -141,18 +150,14 @@ ForestHaunting.prototype.movementLogic = function(){
 	if (this.moveDown && this.moveLeft) {
 		this.mainPlayer.x_speed /= diagonalFactor;
 		this.mainPlayer.y_speed /= diagonalFactor;
-		console.log(this.mainPlayer.y_speed, this.mainPlayer.x_speed);
 	}
 
 	if (this.moveUp && this.moveLeft) {
 		this.mainPlayer.x_speed /= diagonalFactor;
 		this.mainPlayer.y_speed /= diagonalFactor;
-		console.log(this.mainPlayer.y_speed, this.mainPlayer.x_speed);
 	}
 
 }
-
-
 ForestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
@@ -239,11 +244,18 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 		}			
 	}				
 }
-ForestHaunting.prototype.mainScreen = function(  ){
-	this.mainPlayer.hasKey = false;
-	this.startPressed = false;
-	this.currentScene = [];	
-	this.currentScene.push( this.startButton, this.currentTitle ); 
+ForestHaunting.prototype.mainScreen = function( info ){
+	
+	if( info ){
+		this.currentScene.push( this.infoButton )	
+	}
+	else{
+		this.startPressed = false;
+		this.currentScene = [];	
+		this.currentScene.push( this.startButton, this.currentTitle ); 
+	}
+	
+	
 }
 ForestHaunting.prototype.winScreen = function(  ){
 	// this.mainPlayer.hasKey = false;
@@ -256,22 +268,23 @@ ForestHaunting.prototype.winScreen = function(  ){
 ForestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
 	
-	this.currentScene.push(  new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer, new MakeWallSide(725,-40,100,450,false), new MakeWallSide(290,0,400,60,"top"), new MakeWallSide(290,0,40,400,"left"), new MakeWallSide(325,390,400,30,"bot") );  
+	this.currentScene.push(   new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer, new MakeWallSide(725,-40,100,450,false), new MakeWallSide(290,0,400,60,"top"), new MakeWallSide(290,0,40,400,"left"), new MakeWallSide(325,390,400,30,"bot") );  
 	if( !this.mainPlayer.hasKey ){	
 		this.currentScene.push( new MakeKey(325,0,50,50) );    	
 	}	
+	
 	this.inDoors = true;
 }
 ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){	
 	this.currentScene = [];
 	
-	for (let i = 0; i < 5; i++) {
+	for ( let i = 0; i < 5; i++ ) {
 		this.currentScene.push(new ForrestLineTop((i * 600) - 1500 + startPosX, -100 + startPosY, 600, 200));
 		this.currentScene.push(new ForrestLineTop((i * 600) - 1500 + startPosX, 1100 + startPosY, 600, 200));
 		this.currentScene.push(new ForrestLineSide( -1650+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
-	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new MakeSaltCircle(-810 + startPosX,50 + startPosY,200,100),new MakeSaltCircle(-920 + startPosX,9500 + startPosY,200,100),new MakeSaltCircle(700 + startPosX,500 + startPosY,200,100)/**/,
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new MakeSaltCircle(-810 + startPosX,50 + startPosY,200,100),new MakeSaltCircle(-920 + startPosX,950 + startPosY,200,100),new MakeSaltCircle(700 + startPosX,500 + startPosY,200,100)/**/,
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
 	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
 	this.currentScene.push( this.mainPlayer ); 	
@@ -295,6 +308,6 @@ ForestHaunting.prototype.draw = function() {
 		item.draw( this.c )
 		
 	}.bind( this ));	
-	// draw_wall(this.c);
+	// draw_info(this.c);
 }
 

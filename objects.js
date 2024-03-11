@@ -274,4 +274,20 @@ MakeButton.prototype.draw = function( c ){
 	draw_button( c, this.buttonText );
 	c.restore();
 }
+// ======================================================
+function MakeInfo( x, y, buttonText ){
+	this.x = x;
+	this.y = y;
+	this.width = 500;
+	this.height = 500;
+	this.buttonText = buttonText;
+}
+MakeInfo.prototype.update = function( c ){
+}
+MakeInfo.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_info( c, this.buttonText );
+	c.restore();
+}
 	

@@ -5,6 +5,24 @@ function draw_title( ctx, text ) {
     ctx.fillText(text, 0, 0); // Draw the text at position (220, 60)
     ctx.restore();
 }
+// =======================================
+function draw_info( ctx, text ) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.strokeStyle = "white";
+    ctx.fillStyle = "yellow";
+    ctx.rect(0, 0, 500, 500);
+    ctx.stroke();
+    ctx.fill();
+    ctx.fillStyle = "black"; // Set text color
+    ctx.font = "20px Arial"; // Set font size and family
+    ctx.fillText(text, 55, 60); // Draw the text at position (220, 60)
+    ctx.fillText(text, 55, 90); // Draw the text at position (220, 60)
+    ctx.fillText(text, 55, 120); // Draw the text at position (220, 60)
+    ctx.fillText(text, 55, 150); // Draw the text at position (220, 60)
+    ctx.restore();
+}
+// =======================================
 function draw_button( ctx, text ) {
     ctx.save();
     ctx.beginPath();
