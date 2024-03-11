@@ -100,44 +100,48 @@ ForestHaunting.prototype.frame = function( timestamp ) {
 	this.previous = timestamp;
 	window.requestAnimationFrame( this.frame.bind( this ));
 }
-ForestHaunting.prototype.movementLogic = function() {
-    // Calculate diagonal speed
-    var diagonalSpeed = Math.sqrt(this.mainPlayer.speed * this.mainPlayer.speed / 2);
-    
-    // Horizontal movement
-    if (this.moveRight && !this.moveLeft && !this.rightCollision) {
-        this.mainPlayer.x_speed = -this.mainPlayer.speed;
-    } else if (this.moveLeft && !this.moveRight && !this.leftCollision) {
-        this.mainPlayer.x_speed = this.mainPlayer.speed;
-    } else {
-        this.mainPlayer.x_speed = 0;
-        this.leftCollision = false;
-        this.rightCollision = false;
-    }
-
-    // Vertical movement
-    if (this.moveUp && !this.moveDown && !this.upCollision) {
-        this.mainPlayer.y_speed = this.mainPlayer.speed;
-    } else if (this.moveDown && !this.moveUp && !this.downCollision) {
-        this.mainPlayer.y_speed = -this.mainPlayer.speed;
-    } else {
-        this.mainPlayer.y_speed = 0;
-        this.downCollision = false;
-        this.upCollision = false;
-    }
-
-    // Diagonal movement
-    if ((this.moveRight || this.moveLeft) && (this.moveUp || this.moveDown)) {
-        // Diagonal movement: adjust speed
-        this.mainPlayer.x_speed = (this.moveRight ? -diagonalSpeed : (this.moveLeft ? diagonalSpeed : 0));
-        this.mainPlayer.y_speed = (this.moveUp ? diagonalSpeed : (this.moveDown ? -diagonalSpeed : 0));
-    }
+ForestHaunting.prototype.movementLogic = function(){	
+	if (this.moveRight && !this.moveLeft && !this.rightCollision) {
+		this.mainPlayer.x_speed = -this.mainPlayer.speed;							
+	} else if (this.moveLeft && !this.moveRight && !this.leftCollision) {
+		this.mainPlayer.x_speed = this.mainPlayer.speed;				
+	} else {
+		this.mainPlayer.x_speed = 0;	
+		this.leftCollision = false;
+		this.rightCollision = false;
+	}
+	if (this.moveUp && !this.moveDown && !this.upCollision) {
+		if(this.moveLeft){			
+			this.mainPlayer.x_speed = this.mainPlayer.speed/2;
+			this.mainPlayer.y_speed = this.mainPlayer.speed/2;
+		}
+		if(this.moveRight){
+			this.mainPlayer.x_speed = -this.mainPlayer.speed/2;
+			this.mainPlayer.y_speed = this.mainPlayer.speed/2;
+		}
+		this.mainPlayer.y_speed = this.mainPlayer.speed;				
+	} else if (this.moveDown && !this.moveUp && !this.downCollision) {
+		if(this.moveLeft){			
+			this.mainPlayer.x_speed = this.mainPlayer.speed/2;
+			this.mainPlayer.y_speed = -this.mainPlayer.speed/2;
+		}
+		if(this.moveRight){
+			this.mainPlayer.x_speed = -this.mainPlayer.speed/2;
+			this.mainPlayer.y_speed = -this.mainPlayer.speed/2;
+		}
+		this.mainPlayer.y_speed = -this.mainPlayer.speed;				
+	} else {		
+		this.mainPlayer.y_speed = 0;		
+		this.downCollision = false;
+		this.upCollision = false;
+	}
 }
+
 
 ForestHaunting.prototype.collisionLogic = function( item, index ){
 	// interaction between the ghost and totem 			
 	if ( item.isTotem && this.currentScene[ this.enemyLoc ]  && distance_between( item,this.currentScene[ this.enemyLoc ] )<= 600) {
-		if(distance_between( this.currentScene[ this.enemyLoc ], item ) < 60){
+		if(distance_between( this.currentScene[ this.enemyLoc ], item ) < 80){
 			// console.log("ghost within the range")
 			this.currentScene[ this.enemyLoc ].movementDirection = -1;
 		}
@@ -179,8 +183,8 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
 			// Reverse movement direction if needed
-			let xSpeed = 2 * item.movementDirection;
-			let ySpeed = 2 * item.movementDirection;
+			let xSpeed = 1.5 * item.movementDirection;
+			let ySpeed = 1.5 * item.movementDirection;
 
 			// Adjust position based on player position
 			if (item.x < this.mainPlayer.x) {
@@ -252,7 +256,7 @@ ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 		this.currentScene.push(new ForrestLineSide( -1650+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
-	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new MakeSaltCircle(-810 + startPosX,50 + startPosY,200,100),new MakeSaltCircle(-920 + startPosX,950 + startPosY,200,100),new MakeSaltCircle(700 + startPosX,500 + startPosY,200,100)/**/,
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new MakeSaltCircle(-810 + startPosX,50 + startPosY,200,100),new MakeSaltCircle(-920 + startPosX,9500 + startPosY,200,100),new MakeSaltCircle(700 + startPosX,500 + startPosY,200,100)/**/,
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
 	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
 	this.currentScene.push( this.mainPlayer ); 	
