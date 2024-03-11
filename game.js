@@ -100,41 +100,56 @@ ForestHaunting.prototype.frame = function( timestamp ) {
 	this.previous = timestamp;
 	window.requestAnimationFrame( this.frame.bind( this ));
 }
-ForestHaunting.prototype.movementLogic = function(){	
+ForestHaunting.prototype.movementLogic = function(){		
+	
 	if (this.moveRight && !this.moveLeft && !this.rightCollision) {
 		this.mainPlayer.x_speed = -this.mainPlayer.speed;							
-	} else if (this.moveLeft && !this.moveRight && !this.leftCollision) {
+	} 
+	else if (this.moveLeft && !this.moveRight && !this.leftCollision) {
 		this.mainPlayer.x_speed = this.mainPlayer.speed;				
-	} else {
+	} 
+	else {
 		this.mainPlayer.x_speed = 0;	
 		this.leftCollision = false;
 		this.rightCollision = false;
 	}
 	if (this.moveUp && !this.moveDown && !this.upCollision) {
-		if(this.moveLeft){			
-			this.mainPlayer.x_speed = this.mainPlayer.speed/2;
-			this.mainPlayer.y_speed = this.mainPlayer.speed/2;
-		}
-		if(this.moveRight){
-			this.mainPlayer.x_speed = -this.mainPlayer.speed/2;
-			this.mainPlayer.y_speed = this.mainPlayer.speed/2;
-		}
+		
 		this.mainPlayer.y_speed = this.mainPlayer.speed;				
-	} else if (this.moveDown && !this.moveUp && !this.downCollision) {
-		if(this.moveLeft){			
-			this.mainPlayer.x_speed = this.mainPlayer.speed/2;
-			this.mainPlayer.y_speed = -this.mainPlayer.speed/2;
-		}
-		if(this.moveRight){
-			this.mainPlayer.x_speed = -this.mainPlayer.speed/2;
-			this.mainPlayer.y_speed = -this.mainPlayer.speed/2;
-		}
+	} 
+	else if (this.moveDown && !this.moveUp && !this.downCollision) {
 		this.mainPlayer.y_speed = -this.mainPlayer.speed;				
-	} else {		
+	} 
+	else {		
 		this.mainPlayer.y_speed = 0;		
 		this.downCollision = false;
 		this.upCollision = false;
 	}
+	const diagonalFactor = Math.sqrt(2); // Adjusts for diagonal movement slowdown
+
+	// Adjust diagonal movement speed
+	if (this.moveDown && this.moveRight) {
+		this.mainPlayer.x_speed /= diagonalFactor;
+		this.mainPlayer.y_speed /= diagonalFactor;
+	}
+
+	if (this.moveUp && this.moveRight) {
+		this.mainPlayer.x_speed /= diagonalFactor;
+		this.mainPlayer.y_speed /= diagonalFactor;
+	}
+
+	if (this.moveDown && this.moveLeft) {
+		this.mainPlayer.x_speed /= diagonalFactor;
+		this.mainPlayer.y_speed /= diagonalFactor;
+		console.log(this.mainPlayer.y_speed, this.mainPlayer.x_speed);
+	}
+
+	if (this.moveUp && this.moveLeft) {
+		this.mainPlayer.x_speed /= diagonalFactor;
+		this.mainPlayer.y_speed /= diagonalFactor;
+		console.log(this.mainPlayer.y_speed, this.mainPlayer.x_speed);
+	}
+
 }
 
 
