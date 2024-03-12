@@ -10,6 +10,7 @@ ForestHaunting = function( id ){
 	this.restartPressed = true;
 	this.startPressed = false;
 	this.infoPressed = false;
+	this.playerWin = false;
 	this.action = false;
 	this.moveDown = false;
 	this.moveUp = false;
@@ -27,6 +28,7 @@ ForestHaunting = function( id ){
 	this.currentTitle = new MakeTitle( 290, 100, "ForestHaunting" );
 	// this.firstMap(-350,-50);
 	this.mainScreen();
+	// this.firstHouse();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
 	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
@@ -34,9 +36,19 @@ ForestHaunting = function( id ){
 	window.requestAnimationFrame( this.frame.bind( this ));	
 	
 }
-function playSound() {
-  var audio = document.getElementById('myAudio');
+function playCarSound() {
+	
+  var audio = document.getElementById('carAudio');
   audio.play();
+}
+function playGhostSound() {
+  var audio = document.getElementById('ghostAudio');
+  audio.play();
+}
+function stopGhostSound() {
+  var audio = document.getElementById('ghostAudio');
+  audio.pause();
+  audio.currentTime = 0; // This resets the audio to the beginning
 }
 ForestHaunting.prototype.onMouseDown = function( event ) {
     var mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
@@ -184,6 +196,12 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 			this.restartPressed = false;
 			this.currentTitle.buttonText = "You Died....";
 		}
+		if( !this.playerWin && distance_between( this.mainPlayer, item ) < 500 ){
+			playGhostSound();
+		}
+		else{
+			stopGhostSound();
+		}
 		this.enemyLoc = index;
 		// Reverse movement direction if needed
 		let xSpeed = 2 * item.movementDirection;
@@ -229,8 +247,10 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 		
 		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&
 		this.mainPlayer.y < item.y + item.height - 50 && this.mainPlayer.y+100 > item.y ){	
-			if ( item.isCar && this.action && this.mainPlayer.hasKey ) {			
+			if ( item.isCar && this.action && this.mainPlayer.hasKey ) {					
 				this.winScreen();
+				// need this for audio to stop on ghost
+				this.playerWin = true;
 			}
 			if( this.mainPlayer.x < item.x ){					
 				this.rightCollision = true;					
@@ -275,7 +295,8 @@ ForestHaunting.prototype.mainScreen = function( info ){
 ForestHaunting.prototype.winScreen = function(  ){
 	// this.mainPlayer.hasKey = false;
 	// this.startPressed = false;
-	playSound();
+	
+	playCarSound();
 	this.currentScene = [];	
 	this.currentScene.push( new MakeTitle( 290, 100, "ForestHaunting" ), new MakeTitle( 290, 300, "Created by Latamata" ) );  
 	console.log("win")
