@@ -54,7 +54,6 @@ MakePlayer.prototype.update = function(elapsed) {
 		this.currentFrame = 0;
 	}
 };
-
 MakePlayer.prototype.draw = function( c ){
 	c.save();
 	c.translate( this.x, this.y );
@@ -80,6 +79,16 @@ MakeAberration.prototype.draw = function( c ){
 	c.restore();
 }
 // ======================================================
+function MakeDoor( x, y ){
+	this.super( x, y );
+}
+extend( MakeDoor, TopDownPlayerMovement );
+MakeDoor.prototype.draw = function( c ){
+	c.save();
+	c.translate( this.x, this.y );	
+	draw_door( c, this.side );
+	c.restore();
+}// ======================================================
 function MakeWallSide( x, y, width, height, side ){
 	this.super( x, y );
 	this.width = width;

@@ -135,6 +135,13 @@ function draw_aberration( ctx ){
 	ctx.restore();
 }
 // =======================================
+function draw_door(ctx){
+	let picture = document.getElementById('door');
+	ctx.save();
+	ctx.drawImage( picture, 0, 0 );
+	ctx.restore();
+}
+// =======================================
 function draw_maindude( ctx, currentFrame, direction ){
 	let picture = document.getElementById('body');
 	ctx.save();

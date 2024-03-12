@@ -25,8 +25,8 @@ ForestHaunting = function( id ){
 	this.restartButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Restart Game" );	
 	this.infoButton = new MakeInfo(280,50,"this is the text that will tell player the 411");	
 	this.currentTitle = new MakeTitle( 290, 100, "ForestHaunting" );
-	// this.firstHouse();
-	this.mainScreen(false);
+	// this.firstMap(-350,-50);
+	this.firstHouse();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
 	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
@@ -285,7 +285,8 @@ ForestHaunting.prototype.winScreen = function(  ){
 ForestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
 	
-	this.currentScene.push(   new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer, new MakeWallSide(725,-40,100,450,false), new MakeWallSide(290,0,400,60,"top"), new MakeWallSide(290,0,40,400,"left"), new MakeWallSide(325,390,400,30,"bot") );  
+	this.currentScene.push(   new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer, new MakeWallSide(725,-40,100,450,false),
+	new MakeWallSide(290,0,450,60,"top"), new MakeWallSide(290,0,40,450,"left"), new MakeWallSide(325,389,450,30,"bot"), new MakeDoor(480,402) );  
 	if( !this.mainPlayer.hasKey ){	
 		this.currentScene.push( new MakeKey(325,0,50,50) );    	
 	}	
@@ -301,7 +302,9 @@ ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 		this.currentScene.push(new ForrestLineSide( -1650+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
-	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),new MakeSaltCircle(-810 + startPosX,50 + startPosY,200,100),new MakeSaltCircle(-920 + startPosX,950 + startPosY,200,100),new MakeSaltCircle(700 + startPosX,500 + startPosY,200,100)/**/,
+	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),/*topleft*/new MakeSaltCircle(-810 + startPosX,150 + startPosY,200,100),
+	/*nexttocar*/new MakeSaltCircle(-930 + startPosX,990 + startPosY,200,100),/*left of house*/new MakeSaltCircle(150 + startPosX,350 + startPosY,200,100),
+	new MakeSaltCircle(450 + startPosX,850 + startPosY,200,100),/*new MakeSaltCircle(700 + startPosX,900 + startPosY,200,100),*/
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
 	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
 	this.currentScene.push( this.mainPlayer ); 	
