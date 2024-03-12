@@ -7,8 +7,9 @@ ForestHaunting = function( id ){
 	this.c = this.canvas.getContext( "2d" );	
 	this.currentScene = [];	
 	this.inDoors = false;
+	this.restartPressed = false;
 	this.startPressed = false;
-	this.infoPressed = true;
+	this.infoPressed = false;
 	this.action = false;
 	this.moveDown = false;
 	this.moveUp = false;
@@ -21,6 +22,7 @@ ForestHaunting = function( id ){
 	this.enemyLoc;
 	this.mainPlayer = new MakePlayer( this.canvas.width / 2, this.canvas.height / 2 );	
 	this.startButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Start Game" );	
+	this.restartButton = new MakeButton( this.canvas.width / 3+60, this.canvas.height / 4, "Restart Game" );	
 	this.infoButton = new MakeInfo(280,50,"this is the text that will tell player the 411");	
 	this.currentTitle = new MakeTitle( 290, 100, "ForestHaunting" );
 	// this.firstHouse();
@@ -39,19 +41,24 @@ function playSound() {
 ForestHaunting.prototype.onMouseDown = function( event ) {
     var mouseX = event.clientX - this.canvas.getBoundingClientRect().left;
     var mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
-    
-		// console.log("sup");		
-    // Check collision with startButton
-    if ( !this.infoPressed && this.infoButton.x <  mouseX && this.infoButton.x + this.infoButton.width >  mouseX && this.infoButton.y <  mouseY && this.infoButton.y + this.infoButton.height >  mouseY) {
-		this.infoPressed = true;
+	
+    if ( !this.restartPressed && this.restartButton.x <  mouseX && this.restartButton.x + this.restartButton.width >  mouseX && this.restartButton.y <  mouseY && this.restartButton.y + this.restartButton.height >  mouseY) {
+		// console.log("hello world");
 		this.firstMap( 1100, -550 );
-    }
+	}
 	if ( !this.startPressed && this.startButton.x <  mouseX && this.startButton.x + this.startButton.width >  mouseX && this.startButton.y <  mouseY && this.startButton.y + this.startButton.height >  mouseY) {
 		this.mainScreen( true );
 		this.startPressed = true;
 		this.mainPlayer.hasKey = false;
-		this.infoPressed = false;
+		// this.infoPressed = false;
     }
+		// console.log("sup");		
+    // Check collision with startButton
+    else if ( !this.infoPressed && this.infoButton.x <  mouseX && this.infoButton.x + this.infoButton.width >  mouseX && this.infoButton.y <  mouseY && this.infoButton.y + this.infoButton.height >  mouseY) {
+		this.infoPressed = true;
+		this.firstMap( 1100, -550 );
+    }
+	
 }
 ForestHaunting.prototype.keyDown = function( e ){
 	this.key_handler( e, true );	
@@ -61,45 +68,47 @@ ForestHaunting.prototype.keyUp = function( e ){
 }
 ForestHaunting.prototype.key_handler = function( e, value ){
     var nothing_handled = false;
-    switch( e.key || e.keyCode ){
-        case "ArrowLeft":
-        case 37: //left arrow
+    switch( e.key.toLowerCase() || e.keyCode ){
+        case "arrowleft":
+        case 37: //Left arrow
         case "a":
-        case 65: //a key
+        case 65: //A key
             this.moveLeft = value;
             break;
-        case "ArrowRight":
+        case "arrowright":
         case 39: //Right arrow
         case "d":
-        case 68: //d key
+        case 68: //D key
             this.moveRight= -value;
             break;
-        case "ArrowUp":
+        case "arrowup":
         case 38: //Up arrow
         case "w":
-        case 87: //w key
-			// console.log("hiii")
+        case 87: //W key
             this.moveUp = value;
             break;
-        case "ArrowDown":
+        case "arrowdown":
         case 40: //Down arrow
         case "s":
-        case 83: //s key
+        case 83: //S key
             this.moveDown = -value;
             break;
         case " ":
-        case 32: //spacebar key
+        case 32: //Spacebar key
             // this.ship.trigger = value;
             break;
         case "g":
-        case 71: //g key
+        case 71: //G key
             this.action = value;
-			// console.log(this.action);
+            // console.log(this.action);
+            break;
         default:
             nothing_handled = true;
     }
     if(!nothing_handled) e.preventDefault();
 }
+
+
 ForestHaunting.prototype.frame = function( timestamp ) {
 	if ( !this.previous ) this.previous = timestamp;
 	var elapsed = timestamp - this.previous;
@@ -196,15 +205,15 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 		if( item.enemy ){
 			if( distance_between( this.mainPlayer, item ) < 65 ){
 				// console.log("ghost kill me");
-				this.mainScreen();
+				this.restartScreen();
 				this.currentTitle.buttonText = "You Died....";
-				this.startButton.buttonText = "Restart";
+				// this.startButton.buttonText = "Restart";
 			}
 			this.enemyLoc = index;
 			// console.log(distance_between(item, this.mainPlayer))
 			// Reverse movement direction if needed
-			let xSpeed = 1.5 * item.movementDirection;
-			let ySpeed = 1.5 * item.movementDirection;
+			let xSpeed = 2 * item.movementDirection;
+			let ySpeed = 2 * item.movementDirection;
 
 			// Adjust position based on player position
 			if (item.x < this.mainPlayer.x) {
@@ -243,6 +252,14 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 			}									
 		}			
 	}				
+}
+ForestHaunting.prototype.restartScreen = function(  ){
+
+	// this.startPressed = false;
+	this.currentScene = [];	
+	this.currentScene.push( this.restartButton, this.currentTitle ); 
+
+	
 }
 ForestHaunting.prototype.mainScreen = function( info ){
 	
