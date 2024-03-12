@@ -7,7 +7,7 @@ ForestHaunting = function( id ){
 	this.c = this.canvas.getContext( "2d" );	
 	this.currentScene = [];	
 	this.inDoors = false;
-	this.restartPressed = false;
+	this.restartPressed = true;
 	this.startPressed = false;
 	this.infoPressed = false;
 	this.action = false;
@@ -179,6 +179,30 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 		}
 		
 	}
+	if( item.enemy ){
+		if( distance_between( this.mainPlayer, item ) < 65 ){
+			// console.log("ghost kill me");
+			this.restartScreen();
+			this.restartPressed = false;
+			this.currentTitle.buttonText = "You Died....";
+		}
+		this.enemyLoc = index;
+		// Reverse movement direction if needed
+		let xSpeed = 2 * item.movementDirection;
+		let ySpeed = 2 * item.movementDirection;
+
+		// Adjust position based on player position
+		if (item.x < this.mainPlayer.x) {
+			item.x += xSpeed;
+		} else {
+			item.x -= xSpeed;
+		}
+		if (item.y < this.mainPlayer.y) {
+			item.y += ySpeed;
+		} else {
+			item.y -= ySpeed;
+		}			
+	}
 	if ( item.enemy ) {
 			this.enemyLoc = index; // Set this.enemyLoc when encountering an enemy
 		}
@@ -200,33 +224,9 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 				this.mainPlayer.hasKey = true;
 				console.log(this.mainPlayer.hasKey)
 			}
-		}
-		// detection for player and enemy
-		if( item.enemy ){
-			if( distance_between( this.mainPlayer, item ) < 65 ){
-				// console.log("ghost kill me");
-				this.restartScreen();
-				this.currentTitle.buttonText = "You Died....";
-				// this.startButton.buttonText = "Restart";
-			}
-			this.enemyLoc = index;
-			// console.log(distance_between(item, this.mainPlayer))
-			// Reverse movement direction if needed
-			let xSpeed = 2 * item.movementDirection;
-			let ySpeed = 2 * item.movementDirection;
-
-			// Adjust position based on player position
-			if (item.x < this.mainPlayer.x) {
-				item.x += xSpeed;
-			} else {
-				item.x -= xSpeed;
-			}
-			if (item.y < this.mainPlayer.y) {
-				item.y += ySpeed;
-			} else {
-				item.y -= ySpeed;
-			}			
-		}
+	}
+	// detection for player and enemy
+	
 	if( item.collision ){
 		
 		if( this.mainPlayer.x < item.x + item.width && this.mainPlayer.x +60 > item.x &&

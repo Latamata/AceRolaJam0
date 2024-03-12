@@ -16,10 +16,12 @@ function draw_info( ctx, text ) {
     ctx.fill();
     ctx.fillStyle = "black"; // Set text color
     ctx.font = "20px Arial"; // Set font size and family
-    ctx.fillText(text, 55, 60); // Draw the text at position (220, 60)
-    ctx.fillText(text, 55, 90); // Draw the text at position (220, 60)
-    ctx.fillText(text, 55, 120); // Draw the text at position (220, 60)
-    ctx.fillText(text, 55, 150); // Draw the text at position (220, 60)
+    ctx.fillText("while exploring abandoned house, a ghost ", 55, 60); // Draw the text at position (220, 60)
+    ctx.fillText("appeared and you ran out to the car to find", 55, 90); // Draw the text at position (220, 60)
+    ctx.fillText(" out you dropped car keys back at the house", 55, 120); // Draw the text at position (220, 60)
+    ctx.fillText("WASD to move 'g' for action", 55, 180); // Draw the text at position (220, 60)
+    ctx.fillText("Salt Cirlcles scare ghost", 55, 210); // Draw the text at position (220, 60)
+    ctx.fillText("click to close........", 55, 250); // Draw the text at position (220, 60)
     ctx.restore();
 }
 // =======================================
