@@ -196,7 +196,7 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 			this.restartPressed = false;
 			this.currentTitle.buttonText = "You Died....";
 		}
-		if( !this.playerWin && distance_between( this.mainPlayer, item ) < 500 ){
+		if( !this.inDoors && !this.playerWin && distance_between( this.mainPlayer, item ) < 500 ){
 			playGhostSound();
 		}
 		else{
@@ -204,8 +204,8 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 		}
 		this.enemyLoc = index;
 		// Reverse movement direction if needed
-		let xSpeed = 2 * item.movementDirection;
-		let ySpeed = 2 * item.movementDirection;
+		let xSpeed = 1.5 * item.movementDirection;
+		let ySpeed = 1.8 * item.movementDirection;
 
 		// Adjust position based on player position
 		if (item.x < this.mainPlayer.x) {
@@ -303,7 +303,7 @@ ForestHaunting.prototype.winScreen = function(  ){
 }
 ForestHaunting.prototype.firstHouse = function(  ){	
 	this.currentScene = [];
-	
+	stopGhostSound();
 	this.currentScene.push(   new MakeHouseFloor(325,0,400,400), new MakeDoorway(440,390,200,100), this.mainPlayer, new MakeWallSide(725,-40,100,450,false),
 	new MakeWallSide(290,0,450,60,"top"), new MakeWallSide(290,0,40,450,"left"), new MakeWallSide(325,389,450,30,"bot"), new MakeDoor(480,402) );  
 	if( !this.mainPlayer.hasKey ){	
@@ -321,7 +321,7 @@ ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){
 		this.currentScene.push(new ForrestLineSide( 1450+ startPosX, (i * 500)-100+ startPosY, 150, 500));
 	}
 	this.currentScene.push( new makeCar(-750 + startPosX,1000 + startPosY,200,330),/*topleft*/new MakeSaltCircle(-810 + startPosX,150 + startPosY,200,100),
-	/*nexttocar*/new MakeSaltCircle(-930 + startPosX,990 + startPosY,200,100),/*left of house*/new MakeSaltCircle(150 + startPosX,350 + startPosY,200,100),
+	/*nexttocar*/new MakeSaltCircle(-930 + startPosX,990 + startPosY,200,100),/*left of house*/new MakeSaltCircle(50 + startPosX,350 + startPosY,200,100),
 	new MakeSaltCircle(450 + startPosX,850 + startPosY,200,100),/*new MakeSaltCircle(700 + startPosX,900 + startPosY,200,100),*/
 	new MakeDoorway(810 + startPosX,360 + startPosY,200,100),new MakeHouseTwo( 650 + startPosX,100+startPosY, 430, 300 ),
 	new MakeHouseOne( -650 + startPosX,100+startPosY, 200, 300 ), new MakeAberration(100+ startPosX,500+startPosY, 50,50));   
