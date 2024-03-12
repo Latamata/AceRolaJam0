@@ -26,7 +26,7 @@ ForestHaunting = function( id ){
 	this.infoButton = new MakeInfo(280,50,"this is the text that will tell player the 411");	
 	this.currentTitle = new MakeTitle( 290, 100, "ForestHaunting" );
 	// this.firstMap(-350,-50);
-	this.firstHouse();
+	this.mainScreen();
 	this.canvas.addEventListener( "keydown", this.keyDown.bind( this ), true);
 	this.canvas.addEventListener( "keyup", this.keyUp.bind( this ), true);	
 	this.canvas.addEventListener( 'mousedown', this.onMouseDown.bind( this ));
@@ -107,8 +107,6 @@ ForestHaunting.prototype.key_handler = function( e, value ){
     }
     if(!nothing_handled) e.preventDefault();
 }
-
-
 ForestHaunting.prototype.frame = function( timestamp ) {
 	if ( !this.previous ) this.previous = timestamp;
 	var elapsed = timestamp - this.previous;
@@ -289,8 +287,7 @@ ForestHaunting.prototype.firstHouse = function(  ){
 	new MakeWallSide(290,0,450,60,"top"), new MakeWallSide(290,0,40,450,"left"), new MakeWallSide(325,389,450,30,"bot"), new MakeDoor(480,402) );  
 	if( !this.mainPlayer.hasKey ){	
 		this.currentScene.push( new MakeKey(325,0,50,50) );    	
-	}	
-	
+	}		
 	this.inDoors = true;
 }
 ForestHaunting.prototype.firstMap = function( startPosX, startPosY ){	
