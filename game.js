@@ -273,7 +273,7 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 }
 ForestHaunting.prototype.restartScreen = function(  ){
 
-	// this.startPressed = false;
+	this.mainPlayer.hasKey = false;
 	this.currentScene = [];	
 	this.currentScene.push( this.restartButton, this.currentTitle ); 
 
