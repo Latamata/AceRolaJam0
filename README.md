@@ -1,7 +1,8 @@
-# Acerolla Roguelike: Aberration
+# Acerolla Jam: Aberration Theme
+
 
 ## Overview
-Acerolla Roguelike: Aberration is a game developed for the Acerolla game jam. It is a roguelike game featuring a ghost that relentlessly chases the player through procedurally generated levels.
+Acerolla Roguelike game in HTML Canvas.
 
 ## Gameplay
 In Acerolla Roguelike: Aberration, players must navigate through a series of randomly generated dungeon levels while avoiding the relentless pursuit of a ghostly apparition. The game features classic roguelike mechanics, including permadeath and procedural level generation, offering a unique and challenging experience with each playthrough.
