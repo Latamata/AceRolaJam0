@@ -55,22 +55,19 @@ ForestHaunting.prototype.onMouseDown = function( event ) {
     var mouseY = event.clientY - this.canvas.getBoundingClientRect().top;
 	
     if ( !this.restartPressed && this.restartButton.x <  mouseX && this.restartButton.x + this.restartButton.width >  mouseX && this.restartButton.y <  mouseY && this.restartButton.y + this.restartButton.height >  mouseY) {
-		// console.log("hello world");
 		this.firstMap( 1100, -550 );
-	}
+	}	
+    // Check collision with startButton
+    if ( !this.infoPressed && this.infoButton.x <  mouseX && this.infoButton.x + this.infoButton.width >  mouseX && this.infoButton.y <  mouseY && this.infoButton.y + this.infoButton.height >  mouseY) {
+		this.infoPressed = true;
+		this.firstMap( 1100, -550 );
+    }
 	if ( !this.startPressed && this.startButton.x <  mouseX && this.startButton.x + this.startButton.width >  mouseX && this.startButton.y <  mouseY && this.startButton.y + this.startButton.height >  mouseY) {
 		this.mainScreen( true );
 		this.startPressed = true;
 		this.mainPlayer.hasKey = false;
-		// this.infoPressed = false;
-    }
-		// console.log("sup");		
-    // Check collision with startButton
-    else if ( !this.infoPressed && this.infoButton.x <  mouseX && this.infoButton.x + this.infoButton.width >  mouseX && this.infoButton.y <  mouseY && this.infoButton.y + this.infoButton.height >  mouseY) {
-		this.infoPressed = true;
-		this.firstMap( 1100, -550 );
-    }
-	
+		this.infoPressed = false;
+    }	
 }
 ForestHaunting.prototype.keyDown = function( e ){
 	this.key_handler( e, true );	
