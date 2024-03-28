@@ -252,22 +252,22 @@ ForestHaunting.prototype.collisionLogic = function( item, index ){
 				// need this for audio to stop on ghost
 				this.playerWin = true;
 			}
-			if( this.mainPlayer.x < item.x ){					
+			if( this.mainPlayer.x < item.x && this.moveRight ){					
 				this.rightCollision = true;					
-				//console.log("hit right");										
+				console.log("hit right");										
 			}
-			else if( this.mainPlayer.x > item.x ){					
+			else if( this.mainPlayer.x > item.x && this.moveLeft ){					
 				this.leftCollision = true;					
-				//console.log("hit left");				
-			}		
-			if( this.mainPlayer.y < item.y ){					
+				console.log("hit left");				
+			}			
+			if( this.mainPlayer.y < item.y && this.moveDown ){					
 				this.downCollision = true;				
-				//console.log("hit up");				
+				console.log("hit up");				
 			}
-			else if( this.mainPlayer.y > item.y ){					
+			else if( this.mainPlayer.y > item.y && this.moveUp ){					
 				this.upCollision = true;
-				// console.log("hit down");				
-			}									
+				console.log("hit down");				
+			}								
 		}			
 	}				
 }
